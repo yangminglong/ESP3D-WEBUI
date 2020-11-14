@@ -1,3 +1,7 @@
+#main-container {
+    padding: 1em;
+}
+
 .navbar {
     padding: 1em;
     background-color: $bg-color-dark;
@@ -16,5 +20,15 @@
 
     >.toast {
         margin: 0.2rem 0;
+    }
+}
+
+#featuresSettingsPanel {
+    .panel {
+        height: 100%;
+
+        .panel-body {
+            padding: 0.4rem 0.8rem;
+        }
     }
 }
