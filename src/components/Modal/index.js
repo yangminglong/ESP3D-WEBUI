@@ -1,30 +1,35 @@
 import { h, Fragment } from 'preact'
 import { useContext } from "preact/hooks";
-import { UiContext } from '../UiContext'
+import { UiContext } from '../../contexts/UiContext'
+import { Modal as SpModal } from '../Spectre'
 
 export const Modal = () => {
     const { modals } = useContext(UiContext)
     const { modalList, removeModal } = modals
     return modalList && modalList.length > 0 && (
         modalList.map((modal, index) => {
-            const modalSize = (modal.size && modal.size !== '') ? `modal-${modal.size}` : ``
+            const modalSize = modal.size || 'sm'
             return (
-                <div className={`modal ${modalSize} active`} id="modal-id" key={index}>
-                    <div className="modal-overlay" aria-label="Close" onClick={() => removeModal(index)} />
-                    <div className="modal-container">
-                        <div className="modal-header">
+                <SpModal class={`active`} id="modal-id" key={index}>
+                    <SpModal.Overlay aria-label="Close" onClick={() => removeModal(index)} />
+                    <SpModal.Container>
+                        <SpModal.Header>
                             <button
                                 className="btn btn-clear float-right"
                                 aria-label="Close"
                                 onClick={() => removeModal(index)} />
                             <div className="modal-title h5">{modal.title && modal.title}</div>
-                        </div>
-                        <div className="modal-body">
-                            <div className="content">{modal.content && modal.content}</div>
-                        </div>
-                        {modal.footer && <div className="modal-footer">{modal.footer}</div>}
-                    </div>
-                </div>
+                        </SpModal.Header>
+                        <SpModal.Body>
+                            <div className="content">
+                                {modal.content && modal.content}
+                            </div>
+                        </SpModal.Body>
+                        {modal.footer && <SpModal.Footer>{modal.footer}</SpModal.Footer>}
+                    </SpModal.Container>
+
+                </SpModal>
+
             )
         })
 

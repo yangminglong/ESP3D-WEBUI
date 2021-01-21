@@ -1,26 +1,19 @@
 import { h } from 'preact';
+import { Button, Panel } from '../../../components/Spectre'
+import { Settings } from 'preact-feather';
+import PanelDropdownMenu from '../../../components/PanelDropdownMenu'
 
 const SpeedPanel = ({ title }) => (
-    <div class="panel">
-        <div class="panel-header">
-            <div class="panel-title">{title}</div>
-        </div>
-        <div class="panel-nav">
-            <p>
-                navigation components: tabs, breadcrumbs or pagination
-            </p>
-        </div>
-        <div class="panel-body">
-            <p>
-                contents
-            </p>
-        </div>
-        <div class="panel-footer">
-            <p>
-                buttons or inputs
-            </p>
-        </div>
-    </div>
+    <Panel>
+        <Panel.Header>
+            <Panel.Title class="h5">{title}
+                <PanelDropdownMenu />
+            </Panel.Title>
+        </Panel.Header>
+        <Panel.Body>
+        </Panel.Body>
+        <Panel.Footer />
+    </Panel>
 )
 
 export default SpeedPanel

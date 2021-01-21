@@ -1,8 +1,14 @@
 import { h } from 'preact';
-import { Router } from '../Router'
-import { UiContextProvider } from '../UiContext'
+import { useEffect } from 'preact/hooks';
+import DebugLogProvider from 'preact-usedebuglog'
+import { Router, RouterProvider } from '../Router'
+import WsContextProvider from '../../contexts/WsContext'
+import UiContextProvider from '../../contexts/UiContext'
+import QueueingContextProvider from '../../contexts/QueueingContext'
+import SettingsContextProvider from '../../contexts/SettingsContext'
+import { TranslateContextProvider, useTranslateContext } from '../../components/Translate'
 import Navbar from '../Navbar';
-import { Toast } from '../Toast';
+import { ToastsContainer } from '../Toast';
 import { Modal } from '../Modal';
 import Home from '../../pages/home';
 import About from '../../pages/about';
@@ -35,14 +41,26 @@ const routes = {
 const App = () => {
     return (
         <div id="app">
-            <UiContextProvider>
-                <Toast />
-                <Modal />
-                <Navbar />
-                <div id="main-container">
-                    <Router routes={routes} />
-                </div>
-            </UiContextProvider>
+        <DebugLogProvider dev>
+            <WsContextProvider>
+                <RouterProvider>
+                    <QueueingContextProvider>
+                        <TranslateContextProvider>
+                            <UiContextProvider>
+                                <SettingsContextProvider>
+                                    <ToastsContainer />
+                                    <Modal />
+                                    <Navbar />
+                                    <div id="main-container">
+                                        <Router routes={routes} />
+                                    </div>
+                                </SettingsContextProvider>
+                            </UiContextProvider>
+                        </TranslateContextProvider>
+                    </QueueingContextProvider>
+                </RouterProvider>
+            </WsContextProvider>
+        </DebugLogProvider>
         </div>
     )
 }

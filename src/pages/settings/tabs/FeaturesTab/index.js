@@ -7,13 +7,20 @@
 import { h } from 'preact'
 import { useState, useEffect } from 'preact/hooks'
 import { Field } from '../../../../components/Form/Field'
+import { Loading } from '../../../../components/Spectre'
 import { settingsFormatter, settingsState } from './settingsFormatter'
-import { Settings } from '../../../../constants/esp400.json'
+import { useQueuing } from '../../../../hooks/useQueuing'
+import useUI from '../../../../hooks/useUi'
+
 
 const FeaturesTab = () => {
-    const [formState, setFormState] = useState(settingsState(Settings))
+    const { modals, toasts } = useUI()
+    const { createNewRequest } = useQueuing()
+    const [formState, setFormState] = useState()
+    const [sectionsStructure, setSectionsStructure] = useState()
     const [updatableSettingsState, setUpdatableSettingsState] = useState({})
-    const sectionsStructure = settingsFormatter(Settings)
+    const [isLoading, setIsLoading] = useState(true)
+    // const sectionsStructure = settingsFormatter(Settings)
 
     const handleValidation = (id, value) => { }
 
@@ -28,15 +35,35 @@ const FeaturesTab = () => {
         if (isValid.valid) setUpdatableSettingsState({ ...updatableSettingsState, [name]: value })
     }
 
+    const saveFeaturesSettings = (updatedSettings) => {
+        //[ESP401]P=329 T=B V=0&PAGEID=5
+    }
+
     useEffect(() => {
-        // console.log('State', formState) //for debug purpose 
-        // console.log('Structure', sectionsStructure) //for debug purpose
+        createNewRequest(
+            `http://localhost:8080/command?cmd=${encodeURIComponent('[ESP400]')}`,
+            { method: 'GET' },
+            {
+                onSuccess: result => {
+                    const jsonResult = JSON.parse(result)
+                    setSectionsStructure(settingsFormatter(jsonResult['Settings']))
+                    setFormState(settingsState(jsonResult['Settings']))
+                    setIsLoading(false)
+                },
+                onFail: error => {
+                    setIsLoading(false)
+                    toasts.addToast({ content: error, type: 'error' })
+                },
+            }
+        )
+
         // console.log('updatableSettingsState', updatableSettingsState) //for dev purpose, handeValidation todo
-    }, [formState])
+    }, [])
 
     return (
         <div id="featuresSettingsPanel">
-            <form className="form-horizontal ">
+            {isLoading && <Loading large />}
+            {!isLoading && sectionsStructure && <form className="form-horizontal ">
                 {
                     Object.keys(sectionsStructure).map(sectionId => {
                         const section = sectionsStructure[sectionId]
@@ -76,7 +103,7 @@ const FeaturesTab = () => {
                         )
                     })
                 }
-            </form>
+            </form>}
         </div>
     )
 }

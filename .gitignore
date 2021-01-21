@@ -1,9 +1,10 @@
 node_modules
 build
-dist/images/jogdial.svg
-dist/images/jogdial1.svg
-dist/images/jogdial2.svg
-dist/images/printer.tpl.htm
-dist/images/repetier.htm
+dist
 dist/index.html
 size-plugin.json
+stats.json
+test
+src/stories
+*.stories.js
+.storybook

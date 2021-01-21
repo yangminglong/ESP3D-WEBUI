@@ -1,5 +1,5 @@
 import { h } from 'preact';
-import { Router, Link } from '../../components/Router';
+import { Router, Link, Breadcrumbs } from '../../components/Router';
 import FeaturesTab from './tabs/FeaturesTab'
 import InterfaceTab from './tabs/InterfaceTab'
 import MarlinTab from './tabs/MarlinTab'
@@ -25,6 +25,7 @@ const routes = {
 
 const Settings = () => (
     <div className="container">
+        <Breadcrumbs />
         <h2>Settings</h2>
         <ul class="tab tab-block">
             <li class="tab-item"><Link className="btn btn-link" activeClassName="active" href={routes.FEATURES.path}>Features</Link></li>
