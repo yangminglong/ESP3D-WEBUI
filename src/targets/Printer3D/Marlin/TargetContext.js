@@ -60,6 +60,20 @@ const TargetContextProvider = ({ children }) => {
     })
     const MAX_TEMPERATURES_LIST_SIZE = 400
 
+    const globalStatus = useRef({ printState: "?", filename: "", state: "" })
+    const fansSpeed = useRef([100])
+    const flowsRate = useRef([100])
+    const feedsRate = useRef([100])
+
+    //format is value is set in indexed value of array
+    //fan / flowRate follow extruders but not feedRate, but keep indexed array also
+    const [fanSpeed, setFanSpeed] = useState(fansSpeed.current)
+    const [flowRate, setFlowRate] = useState(flowsRate.current)
+    const [feedRate, setFeedRate] = useState(feedsRate.current)
+
+    //status has 3 scope : print status, printing filename, state of printer
+    const [status, setStatus] = useState(globalStatus.current)
+
     //format tool:["0":{current:xxx target:xxx}, "1":{current:xxx target:xxx}, ...]
     //index is same as printer
     //Cooler: [], //0->1 is only for laser so out of scope
@@ -114,19 +128,25 @@ const TargetContextProvider = ({ children }) => {
                 setPositions(p)
             } else if (isPrintStatus(data)) {
                 const p = getPrintStatus(data)
-                console.log(p) //setPrintStatus(p)
+                globalStatus.current.printState = p
+                setStatus(globalStatus.current)
             } else if (isPrintFileName(data)) {
                 const p = getPrintFileName(data)
-                console.log(p) //setPrintFileName(p)
+                //Todo: do some sanity check, update
+                globalStatus.current.filename = p
+                setStatus(globalStatus.current)
             } else if (isStatus(data)) {
                 const p = getStatus(data)
-                console.log(p) //setStatus(p)
+                globalStatus.current.state = p
+                setStatus(globalStatus.current)
             } else if (isFlowRate(data)) {
                 const p = getFlowRate(data)
-                console.log(p) //setFlowRate(p)
+                flowsRate.current[p.index] = p.value
+                setFlowRate(flowsRate.current)
             } else if (isFeedRate(data)) {
                 const p = getFeedRate(data)
-                console.log(p) //setFeedRate(p)
+                feedsRate.current[p.index] = p.value
+                setFeedRate(feedsRate.current)
             }
         }
         //etc...
@@ -225,8 +245,29 @@ const TargetContextProvider = ({ children }) => {
         temperaturesList: {
             current: temperaturesList,
             clear: clearTemperaturesList,
-            add: add2TemperaturesList,
         },
+        fanSpeed: {
+            current: fanSpeed,
+            set: (index, value) => {
+                fansSpeed[index] = value
+                setFanSpeed(fanSpeed)
+            },
+        },
+        flowRate: {
+            current: flowRate,
+            set: (index, value) => {
+                flowsRate[index] = value
+                setFlowRate(fanSpeed)
+            },
+        },
+        feedRate: {
+            current: feedRate,
+            set: (index, value) => {
+                feedsRate[index] = value
+                setFeedRate(fanSpeed)
+            },
+        },
+        status,
         processData,
     }
 

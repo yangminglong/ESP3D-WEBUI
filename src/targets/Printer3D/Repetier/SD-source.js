@@ -31,7 +31,6 @@ import { useUiContextFn, useSettingsContextFn } from "../../../contexts"
 const formatFileSerialLine = (acc, line) => {
     const directory_regex = /(.*\/)$/gi
     const file_regex = /(.*)\s([0-9]*)$/gi
-    const elements = line.split(" ")
     let result = directory_regex.exec(line)
     if (result) {
         //it is a dir

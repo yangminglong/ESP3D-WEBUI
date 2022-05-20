@@ -190,7 +190,7 @@ const getFlowRate = (str) => {
     let result = null
     const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
     if ((result = reg_search1.exec(str)) !== null) {
-        return { extruder: result[1], value: result[2] }
+        return { index: parseInt(result[1]), value: result[2] }
     }
     return null
 }
@@ -211,9 +211,10 @@ const getFeedRate = (str) => {
     let result = null
     const reg_search1 = /FR:(.*)\%/
     if ((result = reg_search1.exec(str)) !== null) {
-        return result[1]
+        //only one index currently supported feven on multiple extruders
+        return { index: 0, value: result[1] }
     }
-    return "Unknown"
+    return null
 }
 
 export {
