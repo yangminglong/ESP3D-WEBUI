@@ -1,5 +1,6 @@
 import { h } from "preact"
 import { ChevronDown } from "preact-feather"
+import { useUiContextFn } from "../../contexts"
 
 const Menu = ({ items }) => {
     return (
@@ -7,6 +8,9 @@ const Menu = ({ items }) => {
             <span
                 class="dropdown-toggle btn btn-xs btn-header m-1"
                 tabindex="0"
+                onClick={(e) => {
+                    useUiContextFn.haptic()
+                }}
             >
                 <ChevronDown size="0.8rem" />
             </span>

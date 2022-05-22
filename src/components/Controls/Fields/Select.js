@@ -19,7 +19,7 @@
 
 import { Fragment, h } from "preact"
 import { useEffect } from "preact/hooks"
-import { useSettingsContext } from "../../../contexts"
+import { useSettingsContext, useUiContextFn } from "../../../contexts"
 
 const Option = ({ label, ...props }) => {
     const { connectionSettings } = useSettingsContext()
@@ -52,6 +52,7 @@ const Select = ({
         name: id,
     }
     const onChange = (e) => {
+        if (e) useUiContextFn.haptic()
         if (setValue) setValue(e.target.value)
     }
     useEffect(() => {

@@ -88,6 +88,9 @@ const Dashboard = () => {
                             tabindex="0"
                             style="z-index: 10000"
                             data-tooltip={T("S187")}
+                            onclick={() => {
+                                useUiContextFn.haptic()
+                            }}
                         >
                             <List />
                         </span>
