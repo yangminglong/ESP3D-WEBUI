@@ -130,7 +130,6 @@ const MachineSettings = () => {
         machineSetting.totalToSave = 0
         machineSetting.toSave = []
         machineSetting.cache.map((entry, index) => {
-            console.log(entry)
             if (entry.type != "comment") {
                 if (entry.initial.trim() != entry.value.trim()) {
                     machineSetting.totalToSave++
