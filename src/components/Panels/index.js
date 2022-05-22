@@ -4,13 +4,15 @@ import { useUiContextFn } from "../../contexts"
 
 const Menu = ({ items }) => {
     return (
-        <div class="dropdown dropdown-right">
+        <div
+            class="dropdown dropdown-right"
+            onClick={(e) => {
+                useUiContextFn.haptic()
+            }}
+        >
             <span
                 class="dropdown-toggle btn btn-xs btn-header m-1"
                 tabindex="0"
-                onClick={(e) => {
-                    useUiContextFn.haptic()
-                }}
             >
                 <ChevronDown size="0.8rem" />
             </span>

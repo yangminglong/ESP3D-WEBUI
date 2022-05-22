@@ -25,7 +25,7 @@ import {
 } from "../components/Helpers"
 
 const useUiContextFn = {}
-
+const audio = {}
 /*
  * Local const
  *
@@ -51,7 +51,7 @@ const UiContextProvider = ({ children }) => {
         authenticate: true,
         page: "connecting",
     })
-    const audio = {}
+
     const toastsRef = useRef(toasts)
     toastsRef.current = toasts
     const notificationsRef = useRef(notifications)
@@ -251,11 +251,19 @@ const UiContextProvider = ({ children }) => {
     }
     audio.list = []
     const play = (sequence) => {
+        if (sequence && audio.list.length > 0) {
+            return
+        }
         if (getValue("audio")) {
-            if (!audio.context) initAudio()
-            if (sequence) audio.list = [...sequence]
+            if (!audio.context) {
+                initAudio()
+            }
+            if (sequence) {
+                audio.list = [...sequence]
+            }
             if (audio.list.length > 0 && audio.context) {
                 if (audio.context.state === "suspended") audio.context.resume()
+                if (audio.oscillator) audio.oscillator.stop()
                 audio.oscillator = audio.context.createOscillator()
                 audio.oscillator.type = "square"
                 audio.oscillator.frequency.setValueAtTime(
@@ -269,10 +277,13 @@ const UiContextProvider = ({ children }) => {
                     audio.context.currentTime
                 ) // value in hertz
                 audio.oscillator.start()
-                setTimeout(() => {
-                    audio.oscillator.stop()
-                    play()
-                }, current.d)
+                setTimeout(
+                    () => {
+                        audio.oscillator.stop()
+                        play()
+                    },
+                    current.d > 0 ? current.d : 1
+                )
             }
         }
     }
