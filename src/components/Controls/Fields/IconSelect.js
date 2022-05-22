@@ -47,6 +47,7 @@ const IconSelect = ({
     const { modals } = useUiContext()
     const iconsList = { ...iconsTarget, ...iconsFeather }
     const showList = (e) => {
+        useUiContextFn.haptic()
         const content = (
             <div>
                 {Object.keys(iconsList).map((element) => {
@@ -54,6 +55,7 @@ const IconSelect = ({
                         ? iconsList[element]
                         : ""
                     const onSelect = (e) => {
+                        useUiContextFn.haptic()
                         setValue(element)
                         modals.removeModal(modals.getModalIndex(modalId))
                     }

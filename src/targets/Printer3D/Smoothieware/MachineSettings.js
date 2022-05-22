@@ -231,6 +231,7 @@ const MachineSettings = () => {
     }
 
     const onCancel = (e) => {
+        useUiContextFn.haptic()
         toasts.addToast({
             content: T("S175"),
             type: "error",
@@ -257,6 +258,7 @@ const MachineSettings = () => {
     }
 
     const onReset = (e) => {
+        useUiContextFn.haptic()
         showConfirmationModal({
             modals,
             title: T("S26"),
@@ -267,6 +269,7 @@ const MachineSettings = () => {
     }
 
     const onRefresh = (e) => {
+        useUiContextFn.haptic()
         const refreshContext = { target: "", command: "" }
         if (configSelected) {
             refreshContext.target = "config"
@@ -371,6 +374,7 @@ const MachineSettings = () => {
                                     name="configtype"
                                     checked={configSelected}
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         configSelected = true
                                         if (
                                             uisettings.getValue("autoload") &&
@@ -397,6 +401,7 @@ const MachineSettings = () => {
                                     name="configtype"
                                     checked={!configSelected}
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         configSelected = false
                                         if (
                                             uisettings.getValue("autoload") &&
@@ -442,16 +447,17 @@ const MachineSettings = () => {
                                         return (
                                             <div
                                                 class="text-small text-gray text-italic text-left"
-                                                style={`margin-left:2rem;${machineSettings.cache[
-                                                    index + 1
-                                                ]
-                                                    ? machineSettings.cache[
+                                                style={`margin-left:2rem;${
+                                                    machineSettings.cache[
                                                         index + 1
-                                                    ].type == "help"
-                                                        ? ""
+                                                    ]
+                                                        ? machineSettings.cache[
+                                                              index + 1
+                                                          ].type == "help"
+                                                            ? ""
+                                                            : "margin-bottom:1rem"
                                                         : "margin-bottom:1rem"
-                                                    : "margin-bottom:1rem"
-                                                    }`}
+                                                }`}
                                             >
                                                 {element.value}
                                             </div>
@@ -574,6 +580,7 @@ const MachineSettings = () => {
                             label={T("S61")}
                             icon={<Save />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 saveSettings()
                             }}

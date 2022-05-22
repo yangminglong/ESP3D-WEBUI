@@ -61,6 +61,7 @@ const ConnectionContainer = () => {
             }
         }
         const onclick = (e) => {
+            useUiContextFn.haptic()
             connection.setConnectionState({
                 connected: false,
                 authenticate: connection.connectionState.authenticate,
@@ -76,7 +77,7 @@ const ConnectionContainer = () => {
                 contentSubtitle = T("S145") //"Authentication required"
                 document.title =
                     (connectionSettings.current &&
-                        connectionSettings.current.Hostname
+                    connectionSettings.current.Hostname
                         ? connectionSettings.current.Hostname
                         : "ESP3D") +
                     "(" +
@@ -99,7 +100,7 @@ const ConnectionContainer = () => {
                         ": " + connection.connectionState.extraMsg
                 document.title =
                     (connectionSettings.current &&
-                        connectionSettings.current.Hostname
+                    connectionSettings.current.Hostname
                         ? connectionSettings.current.Hostname
                         : "ESP3D") +
                     "(" +
@@ -124,7 +125,7 @@ const ConnectionContainer = () => {
                         : T("S173") //"Connection with board is lost"
                 document.title =
                     (connectionSettings.current &&
-                        connectionSettings.current.Hostname
+                    connectionSettings.current.Hostname
                         ? connectionSettings.current.Hostname
                         : "ESP3D") +
                     "(" +
@@ -144,7 +145,7 @@ const ConnectionContainer = () => {
                 contentSubtitle = T("S3")
                 document.title =
                     (connectionSettings.current &&
-                        connectionSettings.current.Hostname
+                    connectionSettings.current.Hostname
                         ? connectionSettings.current.Hostname
                         : "ESP3D") +
                     "(" +
@@ -162,7 +163,7 @@ const ConnectionContainer = () => {
                 setTimeout(refreshTimer, 1000)
                 document.title =
                     (connectionSettings.current &&
-                        connectionSettings.current.Hostname
+                    connectionSettings.current.Hostname
                         ? connectionSettings.current.Hostname
                         : "ESP3D") +
                     "(" +
@@ -195,7 +196,7 @@ const ConnectionContainer = () => {
                 } else {
                     document.title =
                         (connectionSettings.current &&
-                            connectionSettings.current.Hostname
+                        connectionSettings.current.Hostname
                             ? connectionSettings.current.Hostname
                             : "ESP3D") +
                         "(" +

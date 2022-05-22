@@ -20,7 +20,7 @@ import { h } from "preact"
 import { useEffect, useRef, useState } from "preact/hooks"
 import { T } from "../Translations"
 import { Sliders } from "preact-feather"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 
 /*
  * Local const
@@ -32,6 +32,7 @@ const ExtraControlsPanel = () => {
     const id = "extraControlsPanel"
 
     const hidePanel = () => {
+        useUiContextFn.haptic()
         panels.hide(id)
     }
 

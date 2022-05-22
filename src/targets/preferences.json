@@ -32,7 +32,7 @@
           "value": false
         },
         {
-          "id": "showsensorspanel",
+          "id": "hapticfeedback",
           "type": "boolean",
           "label": "S176",
           "value": false

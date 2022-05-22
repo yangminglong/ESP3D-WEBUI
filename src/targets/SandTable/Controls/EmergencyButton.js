@@ -37,7 +37,7 @@ const EmergencyButton = () => {
                 echo: replaceVariables(realCommandsTable, command, true),
             }, //need to see real command as it is not printable
             {
-                onSuccess: (result) => { },
+                onSuccess: (result) => {},
                 onFail: (error) => {
                     toasts.addToast({ content: error, type: "error" })
                     console.log(error)
@@ -56,6 +56,7 @@ const EmergencyButton = () => {
             data-tooltip={T("P15")}
             id="btnEStop"
             onclick={(e) => {
+                useUiContextFn.haptic()
                 e.target.blur()
                 const cmd = replaceVariables(
                     realCommandsTable,

@@ -176,6 +176,7 @@ const ExtraContent = ({
                             data-tooltip={refreshPaused ? T("S185") : T("S184")}
                             icon={refreshPaused ? <Play /> : <Pause />}
                             onclick={() => {
+                                useUiContextFn.haptic()
                                 setRefreshPaused(!refreshPaused)
                                 refreshPausedList[id] = !refreshPaused
                             }}
@@ -187,6 +188,7 @@ const ExtraContent = ({
                                 data-tooltip={T("S186")}
                                 icon={<Aperture />}
                                 onclick={() => {
+                                    useUiContextFn.haptic()
                                     const typeImage =
                                         type == "camera"
                                             ? "image/jpeg"
@@ -311,6 +313,7 @@ const ExtraContent = ({
                                 nomin="yes"
                                 icon={<RefreshCcw size="0.8rem" />}
                                 onclick={() => {
+                                    useUiContextFn.haptic()
                                     if (contentCache[id])
                                         contentCache[id] = undefined
                                     loadContent()
@@ -322,6 +325,7 @@ const ExtraContent = ({
                                 class="btn btn-clear btn-close m-1"
                                 aria-label="Close"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     panels.hide(id)
                                     clearInterval(timerIDs[id])
                                 }}

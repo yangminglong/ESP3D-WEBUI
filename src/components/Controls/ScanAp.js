@@ -21,7 +21,7 @@ import { useState, useEffect } from "preact/hooks"
 import { ButtonImg, Loading } from "./../Controls"
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../../components/Helpers"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { T } from "./../Translations"
 import { Lock, CheckCircle } from "preact-feather"
 
@@ -77,7 +77,10 @@ const ScanApList = ({ id, setValue, refreshfn }) => {
                     </thead>
                     <tbody>
                         {APList.map((e) => {
-                            const SSID = e.SSID.replace("&#39;", "'").replace("&#34;", '"')
+                            const SSID = e.SSID.replace("&#39;", "'").replace(
+                                "&#34;",
+                                '"'
+                            )
                             return (
                                 <tr>
                                     <td>{SSID}</td>
@@ -90,8 +93,11 @@ const ScanApList = ({ id, setValue, refreshfn }) => {
                                             data-tooltip={T("S51")}
                                             icon={<CheckCircle />}
                                             onClick={() => {
-                                                setValue(SSID);
-                                                modals.removeModal(modals.getModalIndex(id))
+                                                useUiContextFn.haptic()
+                                                setValue(SSID)
+                                                modals.removeModal(
+                                                    modals.getModalIndex(id)
+                                                )
                                             }}
                                         />
                                     </td>

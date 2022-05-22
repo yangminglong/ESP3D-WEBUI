@@ -197,6 +197,7 @@ const InterfaceTab = () => {
     }
 
     const getInterface = () => {
+        useUiContextFn.haptic()
         setIsLoading(true)
         getInterfaceSettings(setIsLoading)
     }
@@ -479,6 +480,7 @@ const InterfaceTab = () => {
                             data-tooltip={T("S55")}
                             icon={<Download />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 inputFile.current.value = ""
                                 inputFile.current.click()
@@ -491,6 +493,7 @@ const InterfaceTab = () => {
                             data-tooltip={T("S53")}
                             icon={<ExternalLink />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 exportPreferences(interfaceSettings.current)
                             }}
@@ -503,6 +506,7 @@ const InterfaceTab = () => {
                                 label={T("S61")}
                                 icon={<Save />}
                                 onClick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     SaveSettings()
                                 }}

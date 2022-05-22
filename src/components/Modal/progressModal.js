@@ -17,10 +17,12 @@
 */
 import { h } from "preact"
 import { Info } from "preact-feather"
+import { useUiContextFn } from "../../contexts"
 
 const showProgressModal = ({ modals, title, button1, content }) => {
     const id = "progression"
     const defaultCb1 = () => {
+        useUiContextFn.haptic()
         modals.removeModal(modals.getModalIndex(id))
         if (button1 && button1.cb) button1.cb()
     }

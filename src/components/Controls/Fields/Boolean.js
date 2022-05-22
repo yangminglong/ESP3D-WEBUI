@@ -48,6 +48,7 @@ const Boolean = ({
     }
 
     const onChange = (e) => {
+        if (e) useUiContextFn.haptic()
         if (setValue) setValue(e.target.checked)
     }
     const dependId = []

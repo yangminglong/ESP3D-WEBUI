@@ -17,7 +17,7 @@
 */
 import { h } from "preact"
 import { HelpCircle } from "preact-feather"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { useHttpQueue } from "../../hooks"
 import { T } from "../../components/Translations"
 import { espHttpURL } from "../../components/Helpers"
@@ -31,6 +31,7 @@ const showKeepConnected = () => {
     const { createNewRequest } = useHttpQueue()
     const id = "keepconnected"
     const clickKeepConnected = () => {
+        useUiContextFn.haptic()
         createNewRequest(
             espHttpURL("command", { PING: "Yes" }),
             { method: "GET" },
@@ -46,6 +47,7 @@ const showKeepConnected = () => {
         modals.removeModal(modals.getModalIndex(id))
     }
     const clickCancel = () => {
+        useUiContextFn.haptic()
         modals.removeModal(modals.getModalIndex(id))
     }
     if (modals.getModalIndex(id) == -1)

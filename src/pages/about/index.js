@@ -29,7 +29,12 @@ import {
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../../components/Helpers"
 import { T } from "../../components/Translations"
-import { useUiContext, useWsContext, useSettingsContext } from "../../contexts"
+import {
+    useUiContext,
+    useUiContextFn,
+    useWsContext,
+    useSettingsContext,
+} from "../../contexts"
 import { Esp3dVersion } from "../../components/App/version"
 import { Github, RefreshCcw, UploadCloud, LifeBuoy, Info } from "preact-feather"
 import { webUiUrl, fwUrl, Name, restartdelay } from "../../targets"
@@ -54,6 +59,7 @@ const CustomEntry = () => {
     ) {
         if (interfaceSettings.current.custom.help) {
             const onClickHelp = (e) => {
+                useUiContextFn.haptic()
                 window.open(interfaceSettings.current.custom.help, "_blank")
                 e.target.blur()
             }
@@ -68,6 +74,7 @@ const CustomEntry = () => {
         }
         if (interfaceSettings.current.custom.information) {
             const onClickInfo = (e) => {
+                useUiContextFn.haptic()
                 window.open(
                     sinterfaceSettings.current.custom.information,
                     "_blank"
@@ -156,6 +163,7 @@ const About = () => {
     }
 
     const onFWUpdate = (e) => {
+        useUiContextFn.haptic()
         e.target.blur()
         setIsFwUpdate(true)
         inputFilesRef.current.value = ""
@@ -164,6 +172,7 @@ const About = () => {
         inputFilesRef.current.click()
     }
     const onFWGit = (e) => {
+        useUiContextFn.haptic()
         window.open(
             interfaceSettings.current.custom &&
                 interfaceSettings.current.custom.fwurl
@@ -174,6 +183,7 @@ const About = () => {
         e.target.blur()
     }
     const onWebUiUpdate = (e) => {
+        useUiContextFn.haptic()
         e.target.blur()
         setIsFwUpdate(false)
         inputFilesRef.current.value = ""
@@ -182,6 +192,7 @@ const About = () => {
         inputFilesRef.current.click()
     }
     const onWebUiGit = (e) => {
+        useUiContextFn.haptic()
         window.open(webUiUrl, "_blank")
         e.target.blur()
     }
@@ -381,6 +392,7 @@ const About = () => {
                             tooltip
                             data-tooltip={T("S23")}
                             onClick={() => {
+                                useUiContextFn.haptic()
                                 getProps()
                             }}
                         />

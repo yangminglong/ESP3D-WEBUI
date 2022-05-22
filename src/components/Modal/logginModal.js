@@ -19,7 +19,7 @@ import { h } from "preact"
 import { useRef } from "preact/hooks"
 import { Lock } from "preact-feather"
 import { Field } from "../Controls"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { useHttpQueue } from "../../hooks"
 import { T } from "../../components/Translations"
 import { espHttpURL } from "../../components/Helpers"
@@ -41,6 +41,7 @@ const showLogin = () => {
         passwordValue.current = val
     }
     const clickLogin = () => {
+        useUiContextFn.haptic()
         const formData = new FormData()
         formData.append("SUBMIT", "YES")
         formData.append("USER", loginValue.current.trim())
@@ -66,6 +67,7 @@ const showLogin = () => {
         processRequestsNow()
     }
     const clickCancel = () => {
+        useUiContextFn.haptic()
         modals.removeModal(modals.getModalIndex(id))
     }
     if (modals.getModalIndex(id) == -1)

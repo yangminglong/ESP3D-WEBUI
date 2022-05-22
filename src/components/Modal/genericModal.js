@@ -16,7 +16,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 import { h } from "preact"
-
+import { useUiContextFn } from "../../contexts"
 const showModal = ({
     modals,
     title,
@@ -29,11 +29,13 @@ const showModal = ({
     overlay,
 }) => {
     const defaultCb1 = () => {
+        useUiContextFn.haptic()
         if (button1 && button1.noclose != true)
             modals.removeModal(modals.getModalIndex(id))
         if (button1 && button1.cb) button1.cb()
     }
     const defaultCb2 = () => {
+        useUiContextFn.haptic()
         if (button2 && button2.noclose != true)
             modals.removeModal(modals.getModalIndex(id))
         if (button2 && button2.cb) button2.cb()

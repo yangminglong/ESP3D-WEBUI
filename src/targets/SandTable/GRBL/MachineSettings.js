@@ -92,6 +92,7 @@ const MachineSettings = () => {
     }
 
     const onCancel = (e) => {
+        useUiContextFn.haptic()
         toasts.addToast({
             content: T("S175"),
             type: "error",
@@ -102,6 +103,7 @@ const MachineSettings = () => {
     }
 
     const onRefresh = (e) => {
+        useUiContextFn.haptic()
         //get command
         const response = CMD.command("eeprom")
         //send query
@@ -206,6 +208,7 @@ const MachineSettings = () => {
                                                 tooltip
                                                 data-tooltip={T("S82")}
                                                 onclick={() => {
+                                                    useUiContextFn.haptic()
                                                     sendCommand(
                                                         element,
                                                         setvalidation

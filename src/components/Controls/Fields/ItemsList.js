@@ -25,6 +25,7 @@ import { iconsTarget } from "../../../targets"
 import { generateUID } from "../../Helpers"
 import { Field } from "../../Controls"
 import { formatItem } from "../../../tabs/interface/importHelper"
+import { useUiContextFn } from "../../../contexts"
 import {
     Plus,
     ArrowUp,
@@ -61,6 +62,7 @@ const ItemControl = ({
     }
     const downItem = (e) => {
         e.target.blur()
+        useUiContextFn.haptic()
         const item = completeList[index]
         completeList.splice(index, 1)
         completeList.splice(index + 1, 0, item)
@@ -68,12 +70,14 @@ const ItemControl = ({
     }
     const upItem = (e) => {
         e.target.blur()
+        useUiContextFn.haptic()
         const item = completeList[index]
         completeList.splice(index, 1)
         completeList.splice(index - 1, 0, item)
         setValue(completeList)
     }
     const removeItem = (e) => {
+        useUiContextFn.haptic()
         e.target.blur()
         completeList.splice(index, 1)
         setValue(completeList)
@@ -132,6 +136,7 @@ const ItemControl = ({
                             icon={controlIcon}
                             width="100px"
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 onEdit(true)
                             }}
@@ -156,6 +161,7 @@ const ItemControl = ({
                             data-tooltip={T("S95")}
                             icon={<Minimize2 />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 onEdit(false)
                             }}
@@ -255,6 +261,7 @@ const ItemsList = ({
     ...rest
 }) => {
     const addItem = (e) => {
+        useUiContextFn.haptic()
         e.target.blur()
         const newItem = JSON.parse(
             JSON.stringify(id == "macros" ? defaultMacro : defaultPanel)

@@ -26,7 +26,7 @@ import {
     Circle,
     PauseCircle,
 } from "preact-feather"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { Menu as PanelMenu } from "./"
 
 /*
@@ -58,12 +58,15 @@ const NotificationsPanel = () => {
     }
 
     const hidePanel = () => {
+        useUiContextFn.haptic()
         panels.hide(id)
     }
     const clearNotificationList = () => {
+        useUiContextFn.haptic()
         notifications.clear()
     }
     const toggleAutoScroll = (e) => {
+        useUiContextFn.haptic()
         if (!isAutoScrollPaused) {
             notifications.isAutoScroll.current = !isAutoScroll
             setIsAutoScroll(!isAutoScroll)

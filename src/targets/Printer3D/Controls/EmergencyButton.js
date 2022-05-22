@@ -33,7 +33,7 @@ const EmergencyButton = () => {
             espHttpURL("command", { cmd: command }),
             { method: "GET", echo: command },
             {
-                onSuccess: (result) => { },
+                onSuccess: (result) => {},
                 onFail: (error) => {
                     toasts.addToast({ content: error, type: "error" })
                     console.log(error)
@@ -52,6 +52,7 @@ const EmergencyButton = () => {
             data-tooltip={T("P15")}
             id="btnEStop"
             onclick={(e) => {
+                useUiContextFn.haptic()
                 e.target.blur()
                 const cmd = useUiContextFn
                     .getValue("emergencystop")

@@ -355,6 +355,7 @@ const ChartsPanel = () => {
     charts[1].ref = useRef(null)
     const id = "chartsPanel"
     const clearCharts = () => {
+        useUiContextFn.haptic()
         temperaturesList.clear()
         charts.forEach((chart) => {
             if (chart.chart) {
@@ -399,6 +400,7 @@ const ChartsPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />

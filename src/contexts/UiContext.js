@@ -227,6 +227,15 @@ const UiContextProvider = ({ children }) => {
     useUiContextFn.getValue = getValue
     useUiContextFn.getElement = getElement
 
+    const haptic = () => {
+        if (!window || !window.navigator || !window.navigator.vibrate) return
+        if (getValue("hapticfeedback")) {
+            window.navigator.vibrate(200)
+        }
+    }
+
+    useUiContextFn.haptic = haptic
+
     const initAudio = () => {
         if (typeof window.AudioContext !== "undefined") {
             audio.context = new window.AudioContext()

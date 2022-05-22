@@ -33,6 +33,7 @@ import {
 const Reveal = ({ applyTo }) => {
     const [reveal, setReveal] = useState(false)
     const clickReveal = () => {
+        useUiContextFn.haptic()
         setReveal(!reveal)
         //note: reveal is not yet updated so need to upside down compare to use effect
         applyTo.current.type = reveal ? "password" : "text"
@@ -187,6 +188,7 @@ const Input = ({
                         icon={<ChevronDown color="blue" />}
                         data-tooltip={T(help)}
                         onClick={(e) => {
+                            useUiContextFn.haptic()
                             e.target.blur()
                             const modalId = "list" + id
                             showModal({
@@ -202,6 +204,7 @@ const Input = ({
                                                 <li
                                                     class="item-selection-list"
                                                     onclick={(e) => {
+                                                        useUiContextFn.haptic()
                                                         setValue(option.value)
                                                         modals.removeModal(
                                                             modals.getModalIndex(
@@ -242,6 +245,7 @@ const Input = ({
                     data-tooltip={T("S40")}
                     icon={<Search color="blue" />}
                     onClick={(e) => {
+                        useUiContextFn.haptic()
                         e.target.blur()
                         const modalId = "scan"
                         showModal({

@@ -19,7 +19,7 @@
 */
 import { Fragment, h } from "preact"
 import { useEffect, useState, useRef } from "preact/hooks"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { T } from "../../components/Translations"
 import { List } from "preact-feather"
 import { iconsFeather } from "../../components/Images"
@@ -96,6 +96,7 @@ const Dashboard = () => {
                                 <div
                                     class="menu-entry"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         panels.setVisibles([])
                                     }}
                                 >
@@ -132,6 +133,7 @@ const Dashboard = () => {
                                         <div
                                             class="menu-entry"
                                             onclick={(e) => {
+                                                useUiContextFn.haptic()
                                                 if (isVisible) {
                                                     panels.hide(panel.id)
                                                 } else {

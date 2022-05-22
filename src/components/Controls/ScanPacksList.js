@@ -21,7 +21,7 @@ import { useState, useEffect } from "preact/hooks"
 import { ButtonImg, Loading } from "./../Controls"
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../../components/Helpers"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { T, getLanguageName } from "./../Translations"
 import { CheckCircle } from "preact-feather"
 
@@ -87,6 +87,7 @@ const ScanPacksList = ({ id, setValue, refreshfn }) => {
                                     }
                                     icon={<CheckCircle />}
                                     onClick={() => {
+                                        useUiContextFn.haptic()
                                         setValue("default")
                                         modals.removeModal(
                                             modals.getModalIndex(id)
@@ -111,17 +112,17 @@ const ScanPacksList = ({ id, setValue, refreshfn }) => {
                                             >
                                                 {id == "languagePickup"
                                                     ? getLanguageName(
-                                                        e.name.replace(
-                                                            ".gz",
-                                                            ""
-                                                        )
-                                                    )
+                                                          e.name.replace(
+                                                              ".gz",
+                                                              ""
+                                                          )
+                                                      )
                                                     : e.name
-                                                        .replace(".gz", "")
-                                                        .replace(
-                                                            "theme-",
-                                                            ""
-                                                        )}
+                                                          .replace(".gz", "")
+                                                          .replace(
+                                                              "theme-",
+                                                              ""
+                                                          )}
                                             </span>
                                         </td>
 
@@ -132,6 +133,7 @@ const ScanPacksList = ({ id, setValue, refreshfn }) => {
                                                 data-tooltip={T("S179")}
                                                 icon={<CheckCircle />}
                                                 onClick={() => {
+                                                    useUiContextFn.haptic()
                                                     setValue(
                                                         e.name.replace(
                                                             ".gz",
