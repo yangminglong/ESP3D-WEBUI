@@ -229,7 +229,7 @@ const UiContextProvider = ({ children }) => {
 
     const haptic = () => {
         if (getValue("audiofeedback")) {
-            play([{ f: 2000, d: 13 }])
+            play([{ f: 1000, d: 100 }])
         }
         if (!window || !window.navigator || !window.navigator.vibrate) return
         if (getValue("hapticfeedback")) {
@@ -266,24 +266,19 @@ const UiContextProvider = ({ children }) => {
                 if (audio.oscillator) audio.oscillator.stop()
                 audio.oscillator = audio.context.createOscillator()
                 audio.oscillator.type = "square"
-                audio.oscillator.frequency.setValueAtTime(
-                    200,
-                    audio.context.currentTime
-                ) // value in hertz
                 audio.oscillator.connect(audio.context.destination)
                 const current = audio.list.shift()
-                audio.oscillator.frequency.setValueAtTime(
-                    current.f,
-                    audio.context.currentTime
-                ) // value in hertz
+                audio.oscillator.frequency.value = current.f
                 audio.oscillator.start()
-                setTimeout(
-                    () => {
+                if (current.d) {
+                    setTimeout(() => {
                         audio.oscillator.stop()
                         play()
-                    },
-                    current.d > 0 ? current.d : 1
-                )
+                    }, current.d)
+                } else {
+                    audio.oscillator.stop()
+                    play()
+                }
             }
         }
     }

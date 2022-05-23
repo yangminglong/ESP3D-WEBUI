@@ -410,6 +410,7 @@ const JogPanel = () => {
             </div>
             <div class="m-1 jog-container">
                 <PositionsControls />
+                <div class="m-1" />
                 <div class={isKeyboardEnabled ? "m-1" : "show-low m-1"}>
                     <div class="jog-buttons-main-container">
                         <div class="m-1 jog-buttons-container">
