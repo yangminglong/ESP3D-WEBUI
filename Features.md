@@ -24,6 +24,7 @@
 * Monolitic small footprint
 * Single user management support (auto close if not latest connected)
 * Authentication support (admin / user)
+* Configuration wizard (TBD)
 * Firmware supported (3DPrinter / CNC / SandTable):
   * ESP3D:
     * Marlin (1.x / 2.x)
