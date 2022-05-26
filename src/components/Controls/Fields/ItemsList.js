@@ -289,7 +289,7 @@ const ItemsList = ({
         />
     )
     return (
-        <fieldset class="fieldset-top-separator">
+        <fieldset class="fieldset-top-separator fieldset-bottom-separator">
             <legend>
                 <ButtonImg
                     m2

@@ -34,29 +34,36 @@
           "value": true
         },
         {
-          "id": "extrudermax",
-          "type": "number",
-          "label": "P48",
-          "value": "280",
-          "append": "P72",
-          "depend":[{"id":"showextruderctrls", "value":true}]
-        },
-        {
-          "id": "extruderpreheat",
-          "type": "text",
-          "label": "P68",
-          "value": "190;220;230",
-          "append": "P72",
-          "help": "S97",
-          "depend":[{"id":"showextruderctrls", "value":true}]
-        },
-        {
-          "id": "heatextruder",
-          "type": "text",
-          "label": "P91",
-          "value": "M104 S$ T#",
-          "help": "P94",
-          "depend":[{"id":"showextruderctrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showextruderctrls",
+              "value": true}
+          ],
+          "value":[
+              {
+                "id": "extrudermax",
+                "type": "number",
+                "label": "P48",
+                "value": "280",
+                "append": "P72"
+              },
+              {
+                "id": "extruderpreheat",
+                "type": "text",
+                "label": "P104",
+                "value": "190;220;230",
+                "append": "P72",
+                "help": "S97"
+              },
+              {
+                "id": "heatextruder",
+                "type": "text",
+                "label": "P106",
+                "value": "M104 S$ T#",
+                "help": "P94"
+              }
+            ]
         },
         {
           "id": "showbedctrls",
@@ -65,30 +72,37 @@
           "value": true
         },
         {
-          "id": "bedmax",
-          "type": "number",
-          "label": "P67",
-          "value": "140",
-          "append": "P72",
-          "min": "1",
-          "depend":[{"id":"showbedctrls", "value":true}]
-        },
-        {
-          "id": "bedpreheat",
-          "type": "text",
-          "label": "P69",
-          "value": "50;90;110",
-          "append": "P72",
-          "help": "S97",
-          "depend":[{"id":"showbedctrls", "value":true}]
-        },
-        {
-          "id": "heatbed",
-          "type": "text",
-          "label": "P92",
-          "value": "M140 S$",
-          "help": "P94",
-          "depend":[{"id":"showbedctrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showbedctrls",
+              "value": true}
+          ],
+          "value":[
+            {
+              "id": "bedmax",
+              "type": "number",
+              "label": "P48",
+              "value": "140",
+              "append": "P72",
+              "min": "1"
+            },
+            {
+              "id": "bedpreheat",
+              "type": "text",
+              "label": "P104",
+              "value": "50;90;110",
+              "append": "P72",
+              "help": "S97"
+            },
+            {
+              "id": "heatbed",
+              "type": "text",
+              "label": "P106",
+              "value": "M140 S$",
+              "help": "P94"
+            }
+          ]
         },
         {
           "id": "showchamberctrls",
@@ -97,29 +111,36 @@
           "value": true
         },
         {
-          "id": "chambermax",
-          "type": "number",
-          "label": "P70",
-          "value": "140",
-          "append": "P72",
-          "depend":[{"id":"showchamberctrls", "value":true}]
-        },
-        {
-          "id": "chamberpreheat",
-          "type": "text",
-          "label": "P71",
-          "append": "P72",
-          "value": "50;90;110",
-          "help": "S97",
-          "depend":[{"id":"showchamberctrls", "value":true}]
-        },
-        {
-          "id": "heatchamber",
-          "type": "text",
-          "label": "P93",
-          "value": "M141 S$",
-          "help": "P94",
-          "depend":[{"id":"showchamberctrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showchamberctrls",
+              "value": true}
+          ],
+          "value":[
+          {
+            "id": "chambermax",
+            "type": "number",
+            "label": "P48",
+            "value": "140",
+            "append": "P72"
+          },
+          {
+            "id": "chamberpreheat",
+            "type": "text",
+            "label": "P104",
+            "append": "P72",
+            "value": "50;90;110",
+            "help": "S97"
+          },
+          {
+            "id": "heatchamber",
+            "type": "text",
+            "label": "P106",
+            "value": "M141 S$",
+            "help": "P94"
+          }
+         ]
         },
         {
           "id": "showprobectrls",
@@ -305,16 +326,33 @@
           "value": true
         },
         {
-          "id": "fanpresets",
-          "type": "text",
-          "label": "P104",
-          "value": "0;20;50;75;100",
-          "min": "0",
-          "max": "100",
-          "append": "%",
-          "help": "S97",
-          "depend":[{"id":"showfanctrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showfanctrls",
+              "value": true}
+          ],
+          "value":[
+            {
+            "id": "fanpresets",
+            "type": "text",
+            "label": "P104",
+            "value": "0;20;50;75;100",
+            "min": "0",
+            "max": "100",
+            "append": "%",
+            "help": "S97"
+           },
+           {
+            "id": "fancmd",
+            "type": "text",
+            "label": "P106",
+            "value": "M106 S$ P#",
+            "help": "P94"
+           }
+          ]
         },
+        
         {
           "id": "showspeedctrls",
           "type": "boolean",
@@ -322,15 +360,31 @@
           "value": true
         },
         {
-          "id": "speedpresets",
-          "type": "text",
-          "label": "P105",
-          "value": "20;50;75;100;125;150;175;200;250;300",
-          "min": "1",
-          "max": "300",
-          "append": "%",
-          "help": "S97",
-          "depend":[{"id":"showspeedctrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showspeedctrls",
+              "value": true}
+          ],
+          "value":[
+            {
+              "id": "speedpresets",
+              "type": "text",
+              "label": "P104",
+              "value": "20;50;75;100;125;150;175;200;250;300",
+              "min": "1",
+              "max": "300",
+              "append": "%",
+              "help": "S97"
+            },
+            {
+              "id": "speedcmd",
+              "type": "text",
+              "label": "P106",
+              "value": "M220 S$ P#",
+              "help": "P94"
+            }
+            ]
         },
         {
           "id": "showflowratectrls",
@@ -339,15 +393,33 @@
           "value": true
         },
         {
-          "id": "flowratepresets",
-          "type": "text",
-          "label": "P106",
-          "value": "20;50;75;100;125;150;175;200;250;300",
-          "min": "1",
-          "max": "300",
-          "append": "%",
-          "help": "S97",
-          "depend":[{"id":"showflowratectrls", "value":true}]
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showflowratectrls",
+              "value": true}
+          ],
+          "value":[
+            {
+              "id": "flowratepresets",
+              "type": "text",
+              "label": "P104",
+              "value": "20;50;75;100;125;150;175;200;250;300",
+              "min": "1",
+              "max": "300",
+              "append": "%",
+              "help": "S97",
+              "depend":[{"id":"showflowratectrls", "value":true}]
+            },
+            {
+              "id": "flowratecmd",
+              "type": "text",
+              "label": "P106",
+              "value": "M221 S$ T#",
+              "help": "P94",
+              "depend":[{"id":"showflowratectrls", "value":true}]
+            }
+          ]
         },
         {
           "id": "showsensorctrls",

@@ -91,12 +91,18 @@
   animation: border-dance 4s infinite linear;
 }
 
-.fieldset-top-separator {
+.fieldset-no-top-separator {
+  margin-top: -1.8rem;
+}
+
+.fieldset-bottom-separator {
   border-bottom: 0.05rem solid #dadee4;
+}
+  .fieldset-top-separator {
   border-top: 0.05rem solid #dadee4;
 }
 
-.fieldset-top-separator legend {
+.fieldset-bottom-separator legend {
   margin-left: -0.5rem;
 }
 
