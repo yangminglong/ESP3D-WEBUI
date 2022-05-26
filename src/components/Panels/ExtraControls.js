@@ -21,11 +21,101 @@ import { useEffect, useRef, useState } from "preact/hooks"
 import { T } from "../Translations"
 import { Sliders } from "preact-feather"
 import { useUiContext, useUiContextFn } from "../../contexts"
+import { useTargetContext } from "../../targets"
 
 /*
  * Local const
  *
  */
+const ExtraControls = () => {
+    const { fanSpeed, flowRate, feedRate, sensor } = useTargetContext()
+    if (
+        !(
+            useUiContextFn.getValue("showfanctrls") ||
+            useUiContextFn.getValue("showflowratectrls") ||
+            useUiContextFn.getValue("showfeedratectrls") ||
+            useUiContextFn.getValue("showsensorctrls")
+        )
+    )
+        return null
+    return (
+        <div class="extra-ctrls">
+            {useUiContextFn.getValue("showfanctrls") &&
+                fanSpeed.current.map((element, index) => {
+                    const desc =
+                        T("P31") +
+                        (fanSpeed.current.length > 1 ? index + 1 : "")
+                    if (element != -1)
+                        return (
+                            <div
+                                class="extra-control mt-1 tooltip tooltip-bottom"
+                                data-tooltip={desc}
+                            >
+                                <div class="extra-control-header">{desc}</div>
+                                <div class="extral-control-value">
+                                    {element}
+                                </div>
+                            </div>
+                        )
+                })}
+            {useUiContextFn.getValue("showflowratectrls") &&
+                flowRate.current.map((element, index) => {
+                    const desc =
+                        T("P30") +
+                        (flowRate.current.length > 1 ? index + 1 : "")
+                    if (element != -1)
+                        return (
+                            <div
+                                class="extra-control mt-1 tooltip tooltip-bottom"
+                                data-tooltip={desc}
+                            >
+                                <div class="extra-control-header">{desc}</div>
+                                <div class="extral-control-value">
+                                    {element}
+                                </div>
+                            </div>
+                        )
+                })}
+            {useUiContextFn.getValue("showspeedctrls") &&
+                feedRate.current.map((element, index) => {
+                    const desc =
+                        T("P12") +
+                        (feedRate.current.length > 1 ? index + 1 : "")
+                    if (element != -1)
+                        return (
+                            <div
+                                class="extra-control mt-1 tooltip tooltip-bottom"
+                                data-tooltip={desc}
+                            >
+                                <div class="extra-control-header">{desc}</div>
+                                <div class="extral-control-value">
+                                    {element}
+                                </div>
+                            </div>
+                        )
+                })}
+            {useUiContextFn.getValue("showsensorctrls") &&
+                sensor.S.map((element, index) => {
+                    return (
+                        <div
+                            class="extra-control mt-1 tooltip tooltip-bottom"
+                            data-tooltip={
+                                T("sensor") + " (" + element.unit + ")"
+                            }
+                        >
+                            <div class="extra-control-header">
+                                {element.unit}
+                            </div>
+                            <div class="extral-control-value">
+                                {element.value}
+                            </div>
+                        </div>
+                    )
+                })}
+        </div>
+    )
+}
+
 const ExtraControlsPanel = () => {
     const { panels, uisettings } = useUiContext()
 
@@ -55,7 +145,9 @@ const ExtraControlsPanel = () => {
                     </span>
                 </span>
             </div>
-            <div class="panel-body panel-body-dashboard"></div>
+            <div class="panel-body panel-body-dashboard">
+                <ExtraControls />
+            </div>
         </div>
     )
 }
@@ -69,4 +161,4 @@ const ExtraControlsPanelElement = {
     onstart: "openextracontrolsonstart",
 }
 
-export { ExtraControlsPanel, ExtraControlsPanelElement }
+export { ExtraControlsPanel, ExtraControlsPanelElement, ExtraControls }

@@ -168,16 +168,20 @@ path.std:hover {
   justify-content: center;
 }
 
+.extra-ctrls,
 .temperatures-ctrls,
 .jog-positions-ctrls {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
 }
+
+.extra-ctrls,
 .temperatures-ctrls {
   flex-wrap: wrap;
 }
 
+.extra-control,
 .temperatures-ctrl,
 .jog-position-ctrl {
   display: flex;
@@ -188,6 +192,7 @@ path.std:hover {
   align-items: center;
 }
 
+.extra-control-header,
 .temperatures-header,
 .jog-position-header {
   border-radius: 5px 5px 0px 0px;
@@ -200,6 +205,7 @@ path.std:hover {
   width: 100%;
 }
 
+.extra-control-value,
 .temperatures-value,
 .jog-position-value {
   text-align: center;

@@ -217,6 +217,21 @@ const getFeedRate = (str) => {
     return null
 }
 
+const isSensor = (str) => {
+    return str.startsWith("SENSOR:")
+}
+
+const getSensor = (str) => {
+    const result = []
+    const data = " " + str.substring(7)
+    let res = null
+    const reg_search = /\s(?<value>[^\[]+)\[(?<unit>[^\]]+)\]/g
+    while ((res = reg_search.exec(data))) {
+        if (res.groups) result.push(res.groups)
+    }
+    return result
+}
+
 export {
     isTemperatures,
     getTemperatures,
@@ -232,4 +247,6 @@ export {
     getFlowRate,
     isFeedRate,
     getFeedRate,
+    isSensor,
+    getSensor,
 }

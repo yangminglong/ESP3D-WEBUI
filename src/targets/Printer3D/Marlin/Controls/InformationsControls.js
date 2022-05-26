@@ -20,6 +20,7 @@
 import { Fragment, h } from "preact"
 import { PositionsControls } from "../../../../components/Panels/Jog"
 import { TemperaturesControls } from "../../../../components/Panels/Temperatures"
+import { ExtraControls } from "../../../../components/Panels/ExtraControls"
 import { useUiContextFn } from "../../../../contexts"
 
 const InformationsControls = () => {
@@ -29,6 +30,7 @@ const InformationsControls = () => {
             {useUiContextFn.getValue("showtemperaturespanel") && (
                 <TemperaturesControls />
             )}
+            <ExtraControls />
         </Fragment>
     )
 }
