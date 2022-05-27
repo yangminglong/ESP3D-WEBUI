@@ -164,10 +164,6 @@ path.std:hover {
   align-items: center;
 }
 
-.extruders-container{
-  justify-content: center;
-}
-
 .extra-ctrls,
 .temperatures-ctrls,
 .jog-positions-ctrls {
@@ -270,6 +266,7 @@ path.std:hover {
   justify-content: space-evenly;
 }
 
+.extra-ctrls-container,
 .extruder-ctrls-container,
 .temperature-ctrls-container {
   width: 100%;
@@ -277,13 +274,19 @@ path.std:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+.extra-ctrls-container{
+  justify-content: space-around;
+}
+
+.extra-ctrls-container2,
 .temperature-ctrls-container2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.extruder-ctrl-name
+.extruder-ctrl-name,
 .temperature-ctrl-name {
   color: #5755d9;
   flex-grow: 1;

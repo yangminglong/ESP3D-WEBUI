@@ -381,7 +381,7 @@
               "id": "speedcmd",
               "type": "text",
               "label": "P106",
-              "value": "M220 S$ P#",
+              "value": "M220 S$",
               "help": "P94"
             }
             ]
@@ -408,16 +408,14 @@
               "min": "1",
               "max": "300",
               "append": "%",
-              "help": "S97",
-              "depend":[{"id":"showflowratectrls", "value":true}]
+              "help": "S97"
             },
             {
               "id": "flowratecmd",
               "type": "text",
               "label": "P106",
               "value": "M221 S$ T#",
-              "help": "P94",
-              "depend":[{"id":"showflowratectrls", "value":true}]
+              "help": "P94"
             }
           ]
         },

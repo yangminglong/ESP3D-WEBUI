@@ -88,79 +88,81 @@ const ExtruderInputControl = ({ index, size, hasdivider }) => {
 
     return (
         <Fragment>
-            <div class="extruder-ctrl-name">
-                {T("P41").replace("$", size == 1 ? "" : index + 1)}
-            </div>
-            <div class="extruder-ctrls-container m-1">
-                <div class="m-1" />
-                <div>
-                    <Field
-                        id={"input-extruder-" + index}
-                        type="number"
-                        value={extrudeDistance[index]}
-                        min="0"
-                        step="0.5"
-                        width="4rem"
-                        extra="dropList"
-                        append={T("P16")}
-                        options={distances}
-                        setValue={(val, update) => {
-                            if (!update) extrudeDistance[index] = val
-                            setvalidation(generateValidation(index))
-                        }}
-                        validation={validation}
-                    />
+            <div>
+                <div class="extruder-ctrl-name">
+                    {T("P41").replace("$", size == 1 ? "" : index + 1)}
                 </div>
-                <ButtonImg
-                    id={"btn-extrude-plus" + index}
-                    class={`extruder-ctrl-send m-2 ${
-                        !validation.valid ? "d-invisible" : ""
-                    }`}
-                    icon={<Plus />}
-                    tooltip
-                    data-tooltip={T("P53")}
-                    onClick={(e) => {
-                        useUiContextFn.haptic()
-                        e.target.blur()
-                        const cmd =
-                            "T" +
-                            index +
-                            "\nG91\nG1 E" +
-                            extrudeDistance[index] +
-                            " F" +
-                            extruderFeedRate.value +
-                            "\nG90"
-                        const cmds = cmd.split("\n")
-                        cmds.forEach((cmd) => {
-                            sendCommand(cmd)
-                        })
-                    }}
-                />
-                <ButtonImg
-                    id={"btn-extrude-minus" + index}
-                    class={`extruder-ctrl-send m-2 ${
-                        !validation.valid ? "d-invisible" : ""
-                    }`}
-                    icon={<Minus />}
-                    tooltip
-                    data-tooltip={T("P54")}
-                    onClick={(e) => {
-                        useUiContextFn.haptic()
-                        e.target.blur()
-                        const cmd =
-                            "T" +
-                            index +
-                            "\nG91\nG1 E-" +
-                            extrudeDistance[index] +
-                            " F" +
-                            extruderFeedRate.value +
-                            "\nG90"
-                        const cmds = cmd.split("\n")
-                        cmds.forEach((cmd) => {
-                            sendCommand(cmd)
-                        })
-                    }}
-                />
+                <div class="extruder-ctrls-container m-1">
+                    <div class="m-1" />
+                    <div>
+                        <Field
+                            id={"input-extruder-" + index}
+                            type="number"
+                            value={extrudeDistance[index]}
+                            min="0"
+                            step="0.5"
+                            width="4rem"
+                            extra="dropList"
+                            append={T("P16")}
+                            options={distances}
+                            setValue={(val, update) => {
+                                if (!update) extrudeDistance[index] = val
+                                setvalidation(generateValidation(index))
+                            }}
+                            validation={validation}
+                        />
+                    </div>
+                    <ButtonImg
+                        id={"btn-extrude-plus" + index}
+                        class={`extruder-ctrl-send m-2 ${
+                            !validation.valid ? "d-invisible" : ""
+                        }`}
+                        icon={<Plus />}
+                        tooltip
+                        data-tooltip={T("P53")}
+                        onClick={(e) => {
+                            useUiContextFn.haptic()
+                            e.target.blur()
+                            const cmd =
+                                "T" +
+                                index +
+                                "\nG91\nG1 E" +
+                                extrudeDistance[index] +
+                                " F" +
+                                extruderFeedRate.value +
+                                "\nG90"
+                            const cmds = cmd.split("\n")
+                            cmds.forEach((cmd) => {
+                                sendCommand(cmd)
+                            })
+                        }}
+                    />
+                    <ButtonImg
+                        id={"btn-extrude-minus" + index}
+                        class={`extruder-ctrl-send m-2 ${
+                            !validation.valid ? "d-invisible" : ""
+                        }`}
+                        icon={<Minus />}
+                        tooltip
+                        data-tooltip={T("P54")}
+                        onClick={(e) => {
+                            useUiContextFn.haptic()
+                            e.target.blur()
+                            const cmd =
+                                "T" +
+                                index +
+                                "\nG91\nG1 E-" +
+                                extrudeDistance[index] +
+                                " F" +
+                                extruderFeedRate.value +
+                                "\nG90"
+                            const cmds = cmd.split("\n")
+                            cmds.forEach((cmd) => {
+                                sendCommand(cmd)
+                            })
+                        }}
+                    />
+                </div>{" "}
             </div>
             {hasdivider && <div class="divider W-100"></div>}
         </Fragment>

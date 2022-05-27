@@ -63,9 +63,9 @@ const TargetContextProvider = ({ children }) => {
     const MAX_TEMPERATURES_LIST_SIZE = 400
 
     const globalStatus = useRef({ printState: "?", filename: "", state: "" })
-    const fansSpeed = useRef([-1])
-    const flowsRate = useRef([-1])
-    const feedsRate = useRef([-1])
+    const fansSpeed = useRef([])
+    const flowsRate = useRef([])
+    const feedsRate = useRef([])
 
     //format is value is set in indexed value of array
     //fan / flowRate follow extruders but not feedRate, but keep indexed array also
@@ -281,6 +281,7 @@ const TargetContextProvider = ({ children }) => {
         fanSpeed: {
             current: fanSpeed,
             set: (index, value) => {
+                console.log("set fan speed", index, "=", value)
                 fansSpeed[index] = value
                 setFanSpeed(fanSpeed)
             },
