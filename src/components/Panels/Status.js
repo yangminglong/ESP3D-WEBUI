@@ -17,11 +17,13 @@
 */
 
 import { Fragment, h } from "preact"
-import { useEffect, useRef, useState } from "preact/hooks"
 import { T } from "../Translations"
-import { Layers } from "preact-feather"
+import { Layers, PlayCircle, PauseCircle, StopCircle } from "preact-feather"
 import { useUiContext, useUiContextFn } from "../../contexts"
 import { useTargetContext } from "../../targets"
+import { ButtonImg } from "../Controls"
+import { useHttpFn } from "../../hooks"
+import { espHttpURL } from "../Helpers"
 
 /*
  * Local const
@@ -69,17 +71,94 @@ const StatusControls = () => {
 }
 
 const StatusPanel = () => {
-    const { panels, uisettings } = useUiContext()
+    const { toasts, panels } = useUiContext()
     const { status } = useTargetContext()
-
+    const { createNewRequest } = useHttpFn
     const id = "statusPanel"
     const hidePanel = () => {
         useUiContextFn.haptic()
         panels.hide(id)
     }
+    const deviceList = [
+        {
+            name: "S190",
+            depend: ["sd"],
+            buttons: [
+                {
+                    cmd: "sdresumecmd",
+                    icon: <PlayCircle />,
+                    desc: T("P99"),
+                },
+                {
+                    cmd: "sdpausecmd",
+                    icon: <PauseCircle />,
+                    desc: T("P98"),
+                },
+                {
+                    cmd: "sdstopcmd",
+                    icon: <StopCircle />,
+                    desc: T("P100"),
+                },
+            ],
+        },
+        {
+            name: "S188",
+            depend: ["tftsd"],
+            buttons: [
+                {
+                    cmd: "tftsdresumecmd",
+                    icon: <PlayCircle />,
+                    desc: T("P99"),
+                },
+                {
+                    cmd: "tftsdpausecmd",
+                    icon: <PauseCircle />,
+                    desc: T("P98"),
+                },
+                {
+                    cmd: "tftsdstopcmd",
+                    icon: <StopCircle />,
+                    desc: T("P100"),
+                },
+            ],
+        },
+        {
+            name: "S189",
+            depend: ["tftusb"],
+            buttons: [
+                {
+                    cmd: "tftusbresumecmd",
+                    icon: <PlayCircle />,
+                    desc: T("P99"),
+                },
+                {
+                    cmd: "tftusbpausecmd",
+                    icon: <PauseCircle />,
+                    desc: T("P98"),
+                },
+                {
+                    cmd: "tftusbstopcmd",
+                    icon: <StopCircle />,
+                    desc: T("P100"),
+                },
+            ],
+        },
+    ]
 
     console.log("Status panel")
-
+    const sendCommand = (command) => {
+        createNewRequest(
+            espHttpURL("command", { cmd: command }),
+            { method: "GET", echo: command },
+            {
+                onSuccess: (result) => {},
+                onFail: (error) => {
+                    toasts.addToast({ content: error, type: "error" })
+                    console.log(error)
+                },
+            }
+        )
+    }
     return (
         <div class="panel panel-dashboard">
             <div class="navbar">
@@ -99,6 +178,45 @@ const StatusPanel = () => {
             </div>
             <div class="panel-body panel-body-dashboard">
                 <StatusControls />
+                {status.printState.printing &&
+                    deviceList.map((device) => {
+                        if (
+                            !device.depend.every((d) =>
+                                useUiContextFn.getValue(d)
+                            )
+                        )
+                            return null
+                        return (
+                            <fieldset class="fieldset-top-separator fieldset-bottom-separator field-group">
+                                <legend>
+                                    <label class="m-1">{T(device.name)}</label>
+                                </legend>
+                                <div class="field-group-content maxwidth">
+                                    <div class="print-buttons-container">
+                                        {device.buttons.map((button) => (
+                                            <ButtonImg
+                                                icon={button.icon}
+                                                tooltip
+                                                data-tooltip={T(button.desc)}
+                                                onClick={(e) => {
+                                                    useUiContextFn.haptic()
+                                                    e.target.blur()
+                                                    const cmd =
+                                                        useUiContextFn.getValue(
+                                                            button.cmd
+                                                        )
+                                                    const cmds = cmd.split("\n")
+                                                    cmds.forEach((cmd) => {
+                                                        sendCommand(cmd)
+                                                    })
+                                                }}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        )
+                    })}
             </div>
         </div>
     )

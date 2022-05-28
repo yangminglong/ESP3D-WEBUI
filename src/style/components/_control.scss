@@ -145,6 +145,11 @@
   max-width: fit-content;
 }
 
+.maxwidth {
+  width:100%;
+  max-width: 100%;
+}
+
 .terminal {
   font-size: $font-size-sm;
   white-space: pre-wrap;

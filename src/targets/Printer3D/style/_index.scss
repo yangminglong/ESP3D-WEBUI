@@ -274,6 +274,7 @@ path.std:hover {
   justify-content: space-evenly;
 }
 
+.print-buttons-container,
 .extra-ctrls-container,
 .extruder-ctrls-container,
 .temperature-ctrls-container {
@@ -283,6 +284,8 @@ path.std:hover {
   align-items: center;
 }
 
+
+.print-buttons-container,
 .extra-ctrls-container{
   justify-content: space-around;
 }
