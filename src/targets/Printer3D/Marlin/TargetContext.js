@@ -62,7 +62,11 @@ const TargetContextProvider = ({ children }) => {
     })
     const MAX_TEMPERATURES_LIST_SIZE = 400
 
-    const globalStatus = useRef({ printState: "?", filename: "", state: "" })
+    const globalStatus = useRef({
+        printState: { status: "Unknown", printing: false, progress: 0 },
+        filename: "",
+        state: "",
+    })
     const fansSpeed = useRef([])
     const flowsRate = useRef([])
     const feedsRate = useRef([])
@@ -305,7 +309,7 @@ const TargetContextProvider = ({ children }) => {
             current: sensorDataList,
             clear: clearSensorDataList,
         },
-        status,
+        status: status,
         processData,
     }
 

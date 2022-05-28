@@ -111,16 +111,23 @@ const getPrintStatus = (str) => {
     const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
     const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
     if ((result = reg_search1.exec(str)) !== null) {
-        return result[1]
+        return {
+            status: result[1],
+            printing: false,
+            progress: result[1].startsWith("Done") ? 100 : 0,
+        }
     }
     if ((result = reg_search2.exec(str)) !== null) {
-        return (
-            "Printing: " +
-            ((100 * parseFloat(result[1])) / parseInt(result[2])).toFixed(2) +
-            "%"
-        )
+        return {
+            status: "Printing",
+            printing: true,
+            progress: (
+                (100 * parseFloat(result[1])) /
+                parseInt(result[2])
+            ).toFixed(2),
+        }
     }
-    return "Unknown"
+    return { status: "Unknown", printing: false, progress: 0 }
 }
 
 ////////////////////////////////////////////////////////

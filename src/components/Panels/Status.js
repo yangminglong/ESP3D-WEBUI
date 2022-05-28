@@ -16,21 +16,63 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import { h } from "preact"
+import { Fragment, h } from "preact"
 import { useEffect, useRef, useState } from "preact/hooks"
 import { T } from "../Translations"
 import { Layers } from "preact-feather"
 import { useUiContext, useUiContextFn } from "../../contexts"
+import { useTargetContext } from "../../targets"
 
 /*
  * Local const
  *
  */
+
+const StatusControls = () => {
+    const { status } = useTargetContext()
+    if (!useUiContextFn.getValue("showstatuspanel")) return null
+    return (
+        <Fragment>
+            {status.printState.status != "Unknown" && (
+                <div class="status-ctrls">
+                    <div
+                        class="extra-control mt-1 tooltip tooltip-bottom"
+                        data-tooltip={T("P97")}
+                    >
+                        <div class="extra-control-header">
+                            {status.printState.status}
+                        </div>
+                        {status.filename.length > 0 && (
+                            <div class="extra-control-value">
+                                {status.filename}
+                            </div>
+                        )}
+                        <div class="extra-control-value">
+                            {status.printState.progress}%
+                        </div>
+                    </div>
+                </div>
+            )}
+            {status.state.length > 0 && (
+                <div class="status-ctrls">
+                    <div
+                        class="status-control mt-1 tooltip tooltip-bottom"
+                        data-tooltip={T("P67")}
+                    >
+                        <div class="status-control-header">{T("P67")}</div>
+                        <div class="status-control-value">{status.state}</div>
+                    </div>
+                </div>
+            )}
+        </Fragment>
+    )
+}
+
 const StatusPanel = () => {
     const { panels, uisettings } = useUiContext()
+    const { status } = useTargetContext()
 
     const id = "statusPanel"
-
     const hidePanel = () => {
         useUiContextFn.haptic()
         panels.hide(id)
@@ -55,7 +97,9 @@ const StatusPanel = () => {
                     </span>
                 </span>
             </div>
-            <div class="panel-body panel-body-dashboard"></div>
+            <div class="panel-body panel-body-dashboard">
+                <StatusControls />
+            </div>
         </div>
     )
 }
@@ -69,4 +113,4 @@ const StatusPanelElement = {
     onstart: "openstatusonstart",
 }
 
-export { StatusPanel, StatusPanelElement }
+export { StatusPanel, StatusPanelElement, StatusControls }

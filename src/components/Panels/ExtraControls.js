@@ -16,8 +16,8 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import { Fragment, h } from "preact"
-import { useEffect, useRef, useState } from "preact/hooks"
+import { h } from "preact"
+import { useState } from "preact/hooks"
 import { T } from "../Translations"
 import { Sliders, Send } from "preact-feather"
 import { useUiContext, useUiContextFn } from "../../contexts"
@@ -110,9 +110,7 @@ const ExtraControls = () => {
                                 data-tooltip={desc}
                             >
                                 <div class="extra-control-header">{desc}</div>
-                                <div class="extral-control-value">
-                                    {element}
-                                </div>
+                                <div class="extra-control-value">{element}</div>
                             </div>
                         )
                 })}
@@ -128,9 +126,7 @@ const ExtraControls = () => {
                                 data-tooltip={desc}
                             >
                                 <div class="extra-control-header">{desc}</div>
-                                <div class="extral-control-value">
-                                    {element}
-                                </div>
+                                <div class="extra-control-value">{element}</div>
                             </div>
                         )
                 })}
@@ -146,9 +142,7 @@ const ExtraControls = () => {
                                 data-tooltip={desc}
                             >
                                 <div class="extra-control-header">{desc}</div>
-                                <div class="extral-control-value">
-                                    {element}
-                                </div>
+                                <div class="extra-control-value">{element}</div>
                             </div>
                         )
                 })}
@@ -164,7 +158,7 @@ const ExtraControls = () => {
                             <div class="extra-control-header">
                                 {element.unit}
                             </div>
-                            <div class="extral-control-value">
+                            <div class="extra-control-value">
                                 {element.value}
                             </div>
                         </div>

@@ -164,6 +164,7 @@ path.std:hover {
   align-items: center;
 }
 
+.status-ctrls,
 .extra-ctrls,
 .temperatures-ctrls,
 .jog-positions-ctrls {
@@ -177,6 +178,7 @@ path.std:hover {
   flex-wrap: wrap;
 }
 
+.status-control,
 .extra-control,
 .temperatures-ctrl,
 .jog-position-ctrl {
@@ -188,6 +190,7 @@ path.std:hover {
   align-items: center;
 }
 
+.status-control-header,
 .extra-control-header,
 .temperatures-header,
 .jog-position-header {
@@ -201,6 +204,7 @@ path.std:hover {
   width: 100%;
 }
 
+.status-control-value,
 .extra-control-value,
 .temperatures-value,
 .jog-position-value {
@@ -209,6 +213,10 @@ path.std:hover {
   font-size: 80%;
   width: 100%;
   height: 100%;
+}
+.status-control-value{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .temperatures-value {
