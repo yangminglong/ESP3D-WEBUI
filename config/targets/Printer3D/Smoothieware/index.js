@@ -182,7 +182,12 @@ const commandsQuery = (req, res, SendWS) => {
         res.send("")
         return
     }
-
+    if (url.indexOf("SIM:") != -1) {
+        const response = url.substring(url.indexOf("SIM:") + 4)
+        SendWS(response + "\n" + "ok\n")
+        res.send("")
+        return
+    }
     if (url.indexOf("ls -s /sd") != -1) {
         if (url.indexOf("echo BeginFiles") != -1) SendWS("echo: BeginFiles\n")
         SendWS(

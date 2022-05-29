@@ -130,7 +130,6 @@ const MachineSettings = () => {
         machineSetting.totalToSave = 0
         machineSetting.toSave = []
         machineSetting.cache.map((entry, index) => {
-            console.log(entry)
             if (entry.type != "comment") {
                 if (entry.initial.trim() != entry.value.trim()) {
                     machineSetting.totalToSave++
@@ -198,7 +197,7 @@ const MachineSettings = () => {
     }
 
     const onRefresh = (e) => {
-        useUiContextFn.haptic()
+        if (e) useUiContextFn.haptic()
         //get command
         const response = CMD.command("eeprom")
         //send query

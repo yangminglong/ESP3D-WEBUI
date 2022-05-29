@@ -18,6 +18,11 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 import { h } from "preact"
+import { useSettingsContextFn } from "../../../contexts"
+
+////////////////////////////////////////////////////////
+//
+//Temperatures
 
 //Smoothieware Temperatures
 //ok T:inf /0.0 @0 T1:inf /0.0 @0 B:inf /0.0 @0
@@ -63,6 +68,10 @@ const getTemperatures = (str) => {
     return response
 }
 
+////////////////////////////////////////////////////////
+//
+//Positions
+
 //Smoothieware positions
 //ok C: X:0.0000 Y:0.0000 Z:0.0000 E:0.0000
 const isPositions = (str) => {
@@ -81,4 +90,171 @@ const getPositions = (str) => {
     return null
 }
 
-export { isTemperatures, getTemperatures, isPositions, getPositions }
+////////////////////////////////////////////////////////
+//
+//Print status
+
+const isPrintStatus = (str) => {
+    let result = null
+    const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
+    const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    if ((result = reg_search2.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getPrintStatus = (str) => {
+    let result = null
+    const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
+    const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return {
+            status: result[1],
+            printing: false,
+            progress: result[1].startsWith("Done") ? 100 : 0,
+        }
+    }
+    if ((result = reg_search2.exec(str)) !== null) {
+        return {
+            status: "Printing",
+            printing: true,
+            progress: (
+                (100 * parseFloat(result[1])) /
+                parseInt(result[2])
+            ).toFixed(2),
+        }
+    }
+    return { status: "Unknown", printing: false, progress: 0 }
+}
+
+////////////////////////////////////////////////////////
+//
+//Print file name
+
+const isPrintFileName = (str) => {
+    let result = null
+    const reg_search1 = /Current\sfile:\s(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getPrintFileName = (str) => {
+    let result = null
+    const reg_search1 = /Current\sfile:\s(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return result[1]
+    }
+    return "Unknown"
+}
+
+////////////////////////////////////////////////////////
+//
+//Status
+const isStatus = (str) => {
+    let result = null
+    const reg_search1 = /echo:busy:\s(.*)/
+    const reg_search2 = /Error:(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    if ((result = reg_search2.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getStatus = (str) => {
+    let result = null
+    const reg_search1 = /echo:busy:\s(.*)/
+    const reg_search2 = /Error:(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return result[1]
+    }
+    if ((result = reg_search2.exec(str)) !== null) {
+        return result[1]
+    }
+    return "Unknown"
+}
+
+////////////////////////////////////////////////////////
+//
+//Flow rate
+const isFlowRate = (str) => {
+    let result = null
+    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getFlowRate = (str) => {
+    let result = null
+    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return { index: parseInt(result[1]), value: result[2] }
+    }
+    return null
+}
+
+////////////////////////////////////////////////////////
+//
+//Feed rate
+const isFeedRate = (str) => {
+    let result = null
+    const reg_search1 = /FR:(.*)\%/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getFeedRate = (str) => {
+    let result = null
+    const reg_search1 = /FR:(.*)\%/
+    if ((result = reg_search1.exec(str)) !== null) {
+        //only one index currently supported feven on multiple extruders
+        return { index: 0, value: result[1] }
+    }
+    return null
+}
+
+const isSensor = (str) => {
+    return str.startsWith("SENSOR:")
+}
+
+const getSensor = (str) => {
+    const result = []
+    const data = " " + str.substring(7)
+    let res = null
+    const reg_search = /\s(?<value>[^\[]+)\[(?<unit>[^\]]+)\]/g
+    while ((res = reg_search.exec(data))) {
+        if (res.groups) result.push(res.groups)
+    }
+    return result
+}
+
+export {
+    isTemperatures,
+    getTemperatures,
+    isPositions,
+    getPositions,
+    isPrintStatus,
+    getPrintStatus,
+    isPrintFileName,
+    getPrintFileName,
+    isStatus,
+    getStatus,
+    isFlowRate,
+    getFlowRate,
+    isFeedRate,
+    getFeedRate,
+    isSensor,
+    getSensor,
+}

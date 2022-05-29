@@ -340,7 +340,7 @@ const MixedExtrudersControl = ({ feedrate }) => {
                         e.target.blur()
                         const cmd =
                             mixSetCommand() +
-                            "G91\nG1 E" +
+                            "\nG91\nG1 E" +
                             extrudeDistance[0] +
                             " F" +
                             feedrate.value +
@@ -361,7 +361,7 @@ const MixedExtrudersControl = ({ feedrate }) => {
                         e.target.blur()
                         const cmd =
                             mixSetCommand() +
-                            "G91\nG1 E-" +
+                            "\nG91\nG1 E-" +
                             extrudeDistance[0] +
                             " F" +
                             feedrate.value +
