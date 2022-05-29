@@ -76,6 +76,44 @@
         "value": "config.txt"
       }
     ],
+    "controls": [
+      {
+        "id": "fancontrolsgroup",
+        "type": "group",
+        "label": "",
+        "depend":[
+          {"id":"showfanctrls",
+            "value": true}
+        ],
+        "value":[
+         {
+          "id": "fancmd",
+          "type": "text",
+          "label": "P106",
+          "value": "M106",
+          "help": "P94"
+         }
+        ]
+      },
+      {
+        "id": "flowcontrolsgroup",
+        "type": "group",
+        "label": "",
+        "depend":[
+          {"id":"showflowratectrls",
+            "value": true}
+        ],
+        "value":[
+          {
+            "id": "flowratecmd",
+            "type": "text",
+            "label": "P106",
+            "value": "T#;M221 S$",
+            "help": "P94"
+          }
+        ]
+      }
+    ],
     "status":[
         {
           "id": "sdcommands",

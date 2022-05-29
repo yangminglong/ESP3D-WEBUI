@@ -93,11 +93,11 @@ const getPositions = (str) => {
 ////////////////////////////////////////////////////////
 //
 //Print status
-
+//file: /sd/test.gco, 0 % complete, elapsed time: 00:00:03
 const isPrintStatus = (str) => {
     let result = null
     const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
-    const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
+    const reg_search2 = /file:\s[^,]*,\s([0-9]*)\s%\scomplete/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -109,23 +109,20 @@ const isPrintStatus = (str) => {
 
 const getPrintStatus = (str) => {
     let result = null
-    const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
-    const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
+    const reg_search1 = /(Not\scurrently\splaying)/
+    const reg_search2 = /file:\s[^,]*,\s([0-9]*)\s%\scomplete/
     if ((result = reg_search1.exec(str)) !== null) {
         return {
             status: result[1],
             printing: false,
-            progress: result[1].startsWith("Done") ? 100 : 0,
+            progress: 0,
         }
     }
     if ((result = reg_search2.exec(str)) !== null) {
         return {
             status: "Printing",
             printing: true,
-            progress: (
-                (100 * parseFloat(result[1])) /
-                parseInt(result[2])
-            ).toFixed(2),
+            progress: result[1],
         }
     }
     return { status: "Unknown", printing: false, progress: 0 }
@@ -137,16 +134,16 @@ const getPrintStatus = (str) => {
 
 const isPrintFileName = (str) => {
     let result = null
-    const reg_search1 = /Current\sfile:\s(.*)/
+    const reg_search1 = /file:\s([^,]*),\s/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
     return false
 }
-
+//file: /sd/test.gco, 0 % complete, elapsed time: 00:00:03
 const getPrintFileName = (str) => {
     let result = null
-    const reg_search1 = /Current\sfile:\s(.*)/
+    const reg_search1 = /file:\s([^,]*),\s/
     if ((result = reg_search1.exec(str)) !== null) {
         return result[1]
     }
@@ -159,7 +156,7 @@ const getPrintFileName = (str) => {
 const isStatus = (str) => {
     let result = null
     const reg_search1 = /echo:busy:\s(.*)/
-    const reg_search2 = /Error:(.*)/
+    const reg_search2 = /Error:(.*)/i
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -172,7 +169,7 @@ const isStatus = (str) => {
 const getStatus = (str) => {
     let result = null
     const reg_search1 = /echo:busy:\s(.*)/
-    const reg_search2 = /Error:(.*)/
+    const reg_search2 = /Error:(.*)/i
     if ((result = reg_search1.exec(str)) !== null) {
         return result[1]
     }
@@ -185,9 +182,10 @@ const getStatus = (str) => {
 ////////////////////////////////////////////////////////
 //
 //Flow rate
+//Flow rate at 100.00 %
 const isFlowRate = (str) => {
     let result = null
-    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    const reg_search1 = /Flow\srate\sat\s([0-9]*.[0-9]*)\s/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -196,7 +194,7 @@ const isFlowRate = (str) => {
 
 const getFlowRate = (str) => {
     let result = null
-    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    const reg_search1 = /Flow\srate\sat\s([0-9]*.[0-9]*)\s/
     if ((result = reg_search1.exec(str)) !== null) {
         return { index: parseInt(result[1]), value: result[2] }
     }
@@ -206,9 +204,10 @@ const getFlowRate = (str) => {
 ////////////////////////////////////////////////////////
 //
 //Feed rate
+//Speed factor at 100.00 %
 const isFeedRate = (str) => {
     let result = null
-    const reg_search1 = /FR:(.*)\%/
+    const reg_search1 = /Speed\sfactor\sat\s([0-9]*.[0-9]*)\s/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -217,7 +216,7 @@ const isFeedRate = (str) => {
 
 const getFeedRate = (str) => {
     let result = null
-    const reg_search1 = /FR:(.*)\%/
+    const reg_search1 = /Speed\sfactor\sat\s([0-9]*.[0-9]*)\s/
     if ((result = reg_search1.exec(str)) !== null) {
         //only one index currently supported feven on multiple extruders
         return { index: 0, value: result[1] }

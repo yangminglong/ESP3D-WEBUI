@@ -62,8 +62,16 @@ function mergeJSON(o1, o2) {
                 if (i == -1) tempNewObj.push(o2[index])
                 else {
                     if (Array.isArray(tempNewObj[i].value)) {
+                        //need to check if id is already in array
                         for (let v in o2[index].value) {
-                            tempNewObj[i].value.push(o2[index].value[v])
+                            let j = tempNewObj[i].value.findIndex(
+                                (element) => element.id == o2[index].value[v].id
+                            )
+                            if (j == -1) {
+                                tempNewObj[i].value.push(o2[index].value[v])
+                            } else {
+                                tempNewObj[i].value[j] = o2[index].value[v]
+                            }
                         }
                     } else tempNewObj[i].value = o2[index].value
                 }

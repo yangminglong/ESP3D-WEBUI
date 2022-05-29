@@ -154,11 +154,9 @@ const TargetContextProvider = ({ children }) => {
             } else if (isPrintStatus(data)) {
                 const p = getPrintStatus(data)
                 globalStatus.current.printState = p
-                setStatus(globalStatus.current)
-            } else if (isPrintFileName(data)) {
-                const p = getPrintFileName(data)
+                const p2 = getPrintFileName(data)
                 //Todo: do some sanity check, update
-                globalStatus.current.filename = p
+                globalStatus.current.filename = p2
                 setStatus(globalStatus.current)
             } else if (isStatus(data)) {
                 const p = getStatus(data)
