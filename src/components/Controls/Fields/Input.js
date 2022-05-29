@@ -156,6 +156,8 @@ const Input = ({
             <div class={`has-icon-right ${inline ? "column" : ""}`} {...rest}>
                 <input
                     spellcheck="false"
+                    autocorrect="off"
+                    autocomplete="off"
                     ref={inputref}
                     class="form-input"
                     {...props}
@@ -171,6 +173,8 @@ const Input = ({
             <div class={`input-group ${inline ? "column" : ""} `}>
                 <input
                     spellcheck="false"
+                    autocorrect="off"
+                    autocomplete="off"
                     lang="en-US"
                     ref={inputref}
                     style={width ? "width:" + width : ""}
@@ -231,6 +235,8 @@ const Input = ({
             <div class={`input-group ${inline ? "column" : ""} `}>
                 <input
                     spellcheck="false"
+                    autocorrect="off"
+                    autocomplete="off"
                     ref={inputref}
                     id="ssid_sta"
                     class="form-input"
@@ -284,6 +290,8 @@ const Input = ({
             <input
                 disabled={disabled}
                 spellcheck="false"
+                autocorrect="off"
+                autocomplete="off"
                 class="form-input"
                 {...props}
                 {...rest}
