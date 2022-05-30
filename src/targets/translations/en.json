@@ -205,6 +205,7 @@
   "S198": "Select from list",
   "S199":"Not yet supported" ,
   "S200": "Audio feedback",
+  "S201": "Invalid user name or password",
   "sta fallback mode": "Client fallback mode",
   "radio_boot": "Radio at boot",
   "general": "General",

@@ -32,20 +32,21 @@ const showLogin = () => {
     const { modals, connection } = useUiContext()
     const { createNewTopRequest, processRequestsNow } = useHttpQueue()
     const id = "login"
-    const loginValue = useRef()
-    const passwordValue = useRef()
+    const loginValue = useRef("")
+    const passwordValue = useRef("")
     const setLogin = (val) => {
-        loginValue.current = val
+        loginValue.current = val ? val.trim() : ""
     }
     const setPassword = (val) => {
-        passwordValue.current = val
+        passwordValue.current = val ? val.trim() : ""
     }
     const clickLogin = () => {
+        console.log("login", loginValue.current, passwordValue.current)
         useUiContextFn.haptic()
         const formData = new FormData()
         formData.append("SUBMIT", "YES")
-        formData.append("USER", loginValue.current.trim())
-        formData.append("PASSWORD", passwordValue.current.trim())
+        formData.append("USER", loginValue.current)
+        formData.append("PASSWORD", passwordValue.current)
         createNewTopRequest(
             espHttpURL("login"),
             { method: "POST", id: id, body: formData },
@@ -58,6 +59,7 @@ const showLogin = () => {
                 },
             }
         )
+        passwordValue.current = ""
         connection.setConnectionState({
             connected: connection.connectionState.connected,
             authenticate: false,
@@ -92,6 +94,14 @@ const showLogin = () => {
                         style="width:15rem"
                         setValue={setLogin}
                         inline
+                        onkeydown={(e) => {
+                            if (
+                                e.keyCode === 13 &&
+                                document.getElementById("password")
+                            ) {
+                                document.getElementById("password").focus()
+                            }
+                        }}
                     />
                     <Field
                         type="password"
@@ -101,12 +111,23 @@ const showLogin = () => {
                         style="width:15rem"
                         setValue={setPassword}
                         inline
+                        onkeydown={(e) => {
+                            if (
+                                e.keyCode === 13 &&
+                                document.getElementById("loginbtn")
+                            ) {
+                                document.getElementById("loginbtn").click()
+                            }
+                        }}
                     />
+                    {loginValue.current && loginValue.current.length > 0 && (
+                        <div class="error-login-message">{T("S201")}</div>
+                    )}
                 </div>
             ),
             footer: (
                 <div>
-                    <button class="btn mx-2" onClick={clickLogin}>
+                    <button id="loginbtn" class="btn mx-2" onClick={clickLogin}>
                         {T("S148")}
                     </button>
                     <button class="btn mx-2" onClick={clickCancel}>
