@@ -196,7 +196,7 @@ const getFlowRate = (str) => {
     let result = null
     const reg_search1 = /Flow\srate\sat\s([0-9]*.[0-9]*)\s/
     if ((result = reg_search1.exec(str)) !== null) {
-        return { index: parseInt(result[1]), value: result[2] }
+        return { index: 0, value: result[1] }
     }
     return null
 }

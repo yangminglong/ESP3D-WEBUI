@@ -79,6 +79,26 @@
           "depend":[{"id":"ismixedextruder", "value":true}]
         }
       ],
+      "controls": [
+        {
+          "id": "flowcontrolsgroup",
+          "type": "group",
+          "label": "",
+          "depend":[
+            {"id":"showflowratectrls",
+              "value": true}
+          ],
+          "value":[
+            {
+              "id": "flowratecmd",
+              "type": "text",
+              "label": "P106",
+              "value": "T#;M221 S$",
+              "help": "P94"
+            }
+          ]
+        }
+      ],
       "status":[
         {
           "id": "sdcommands",

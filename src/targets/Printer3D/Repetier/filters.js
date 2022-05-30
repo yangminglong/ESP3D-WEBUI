@@ -108,23 +108,26 @@ const isPrintStatus = (str) => {
 
 const getPrintStatus = (str) => {
     let result = null
-    const reg_search1 = /(Not\sSD\sprinting|Done\sprinting\sfile)/
+    const reg_search1 = /(Done\sprinting\sfile)/
     const reg_search2 = /SD\sprinting\sbyte\s([0-9]*)\/([0-9]*)/
     if ((result = reg_search1.exec(str)) !== null) {
         return {
             status: result[1],
             printing: false,
-            progress: result[1].startsWith("Done") ? 100 : 0,
+            progress: 100,
         }
     }
     if ((result = reg_search2.exec(str)) !== null) {
         return {
-            status: "Printing",
-            printing: true,
-            progress: (
-                (100 * parseFloat(result[1])) /
-                parseInt(result[2])
-            ).toFixed(2),
+            status: ParseInt(result[2]) == 0 ? "Not SD printing" : "Printing",
+            printing: result[2] == result[1] ? false : true,
+            progress:
+                result[2] != result[1]
+                    ? (
+                          (ParseFloat(result[1]) / ParseInt(result[2])) *
+                          100
+                      ).toFixed(2)
+                    : 0,
         }
     }
     return { status: "Unknown", printing: false, progress: 0 }
@@ -133,6 +136,7 @@ const getPrintStatus = (str) => {
 ////////////////////////////////////////////////////////
 //
 //Print file name
+//not supported in repetier but left for compatibility
 
 const isPrintFileName = (str) => {
     let result = null
@@ -155,14 +159,24 @@ const getPrintFileName = (str) => {
 ////////////////////////////////////////////////////////
 //
 //Status
+//DebugLevel:14
+//extruder 0: temp sensor defect
+//heated bed: temp sensor defect marked defect
+//Error:Printer set into dry run mode until restart!
+//Disabling all heaters due to detected sensor defect.
+//DebugLevel:14
+//RequestStop:
+//busy:processing
+//busy:processing
+//busy:processing
+//TargetExtr0:0
+//T:-50.88 /0 B:-333.00 /0 DB:1 B@:0 @:0
+//fatal:Heater/sensor error - Printer stopped and heaters disabled due to this error. Fix error and restart with M999.
+
 const isStatus = (str) => {
     let result = null
-    const reg_search1 = /echo:busy:\s(.*)/
-    const reg_search2 = /Error:(.*)/
+    const reg_search1 = /[busy:|fatal:|Error:]\s(.*)/i
     if ((result = reg_search1.exec(str)) !== null) {
-        return true
-    }
-    if ((result = reg_search2.exec(str)) !== null) {
         return true
     }
     return false
@@ -170,12 +184,8 @@ const isStatus = (str) => {
 
 const getStatus = (str) => {
     let result = null
-    const reg_search1 = /echo:busy:\s(.*)/
-    const reg_search2 = /Error:(.*)/
+    const reg_search1 = /[busy:|Error:|fatal:]|\s(.*)/i
     if ((result = reg_search1.exec(str)) !== null) {
-        return result[1]
-    }
-    if ((result = reg_search2.exec(str)) !== null) {
         return result[1]
     }
     return "Unknown"
@@ -183,10 +193,39 @@ const getStatus = (str) => {
 
 ////////////////////////////////////////////////////////
 //
+//Fan speed
+//Fanspeed:255
+const isFanSpeed = (str) => {
+    let result = null
+    const reg_search1 = /Fanspeed:(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return true
+    }
+    return false
+}
+
+const getFanSpeed = (str) => {
+    let result = null
+    const reg_search1 = /Fanspeed:(.*)/
+    if ((result = reg_search1.exec(str)) !== null) {
+        return {
+            index: 0,
+            value:
+                result[1] == "255"
+                    ? 100
+                    : ((parseFloat(result[1]) * 100) / 255).toFixed(0),
+        }
+    }
+    return null
+}
+
+////////////////////////////////////////////////////////
+//
 //Flow rate
+//FlowMultiply:100
 const isFlowRate = (str) => {
     let result = null
-    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    const reg_search1 = /FlowMultiply:(.*)/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -195,9 +234,9 @@ const isFlowRate = (str) => {
 
 const getFlowRate = (str) => {
     let result = null
-    const reg_search1 = /echo:E([0-9])\sFlow:\s(.*)\%/
+    const reg_search1 = /FlowMultiply:(.*)/
     if ((result = reg_search1.exec(str)) !== null) {
-        return { index: parseInt(result[1]), value: result[2] }
+        return { index: 0, value: result[1] }
     }
     return null
 }
@@ -207,7 +246,7 @@ const getFlowRate = (str) => {
 //Feed rate
 const isFeedRate = (str) => {
     let result = null
-    const reg_search1 = /FR:(.*)\%/
+    const reg_search1 = /SpeedMultiply:100(.*)/
     if ((result = reg_search1.exec(str)) !== null) {
         return true
     }
@@ -216,9 +255,9 @@ const isFeedRate = (str) => {
 
 const getFeedRate = (str) => {
     let result = null
-    const reg_search1 = /FR:(.*)\%/
+    const reg_search1 = /SpeedMultiply:100(.*)/
     if ((result = reg_search1.exec(str)) !== null) {
-        //only one index currently supported feven on multiple extruders
+        //only one index currently supported even on multiple extruders
         return { index: 0, value: result[1] }
     }
     return null
@@ -256,4 +295,6 @@ export {
     getFeedRate,
     isSensor,
     getSensor,
+    isFanSpeed,
+    getFanSpeed,
 }

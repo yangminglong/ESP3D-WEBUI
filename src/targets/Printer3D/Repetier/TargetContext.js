@@ -43,6 +43,8 @@ import {
     getFeedRate,
     isSensor,
     getSensor,
+    isFanSpeed,
+    getFanSpeed,
 } from "./filters"
 
 /*
@@ -172,6 +174,10 @@ const TargetContextProvider = ({ children }) => {
                 const p = getFeedRate(data)
                 feedsRate.current[p.index] = p.value
                 setFeedRate(feedsRate.current)
+            } else if (isFanSpeed(data)) {
+                const p = getFanSpeed(data)
+                fansSpeed.current[p.index] = p.value
+                setFanSpeed(fansSpeed.current)
             }
         } else if (type === "core") {
             if (isSensor(data)) {
