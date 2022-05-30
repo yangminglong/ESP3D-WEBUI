@@ -18,7 +18,7 @@
 
 import { h } from "preact"
 import { useEffect } from "preact/hooks"
-import { useUiContext } from "../../../contexts"
+import { useUiContext, useUiContextFn } from "../../../contexts"
 import { ButtonImg } from "../../Controls"
 import { iconsFeather } from "../../Images"
 import { iconsTarget } from "../../../targets"

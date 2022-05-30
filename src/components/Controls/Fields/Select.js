@@ -25,10 +25,10 @@ const Option = ({ label, ...props }) => {
     const { connectionSettings } = useSettingsContext()
     //Condition for camera - no need to display if none setup
     if (props.value == "camera") {
-        if (connectionSettings.current.Cam_name) {
+        if (connectionSettings.current.CameraName) {
             return (
                 <option {...props}>
-                    {connectionSettings.current.Cam_name}
+                    {connectionSettings.current.CameraName}
                 </option>
             )
         } else return null

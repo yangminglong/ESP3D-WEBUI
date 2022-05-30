@@ -133,12 +133,13 @@ const InterfaceTab = () => {
                 //Update camera source automaticaly
                 //Note: is there a less complexe way to do ?
                 const sourceId = fieldData.id.split("-")[0]
-                const extraList = interfaceSettings.current.settings.extrapanels
+                const extraList =
+                    interfaceSettings.current.settings.extracontents
                 //look for extra panels entry
                 const subextraList =
                     extraList[
                         extraList.findIndex((element) => {
-                            return element.id == "extrapanels"
+                            return element.id == "extracontents"
                         })
                     ].value
                 //look for extra panel specific id
