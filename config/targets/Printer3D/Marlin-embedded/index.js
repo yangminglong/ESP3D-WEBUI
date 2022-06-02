@@ -23,6 +23,7 @@ const wscolor = chalk.cyan
 const expresscolor = chalk.green
 const commandcolor = chalk.white
 const enableAuthentication = false
+const SERIAL_PROTOCOL = "RAW"
 let lastconnection = Date.now()
 let logindone = false
 const sessiontTime = 60000
@@ -194,35 +195,90 @@ const commandsQuery = (req, res, SendWS) => {
         res.send("")
         return
     }
+    if (url.indexOf("SIM:") != -1) {
+        const response = url.substring(url.indexOf("SIM:") + 4)
+        SendWS(response + "\n" + "ok\n")
+        res.send("")
+        return
+    }
 
-    if (url.indexOf("M20") != -1) {
+    if (url.indexOf("M20 1:") != -1) {
         SendWS(
             "Begin file list\n" +
-                "CUBE2.GCO 210240\n" +
-                "CUBE01.GCO 2089832\n" +
-                "SUPPORT2.GCO 4613256\n" +
-                "ARCHIVE/CUBE.GCO 210240\n" +
-                "ARCHIVE/CUBE-C~1.GCO 210240\n" +
-                "NEWFOL~1/SUPPORT2.GCO 4613256\n" +
+                "System Volume Information.DIR\n" +
+                "mycode3.gco\n" +
+                "CUBE.GCO\n" +
+                "bak_pic.DIR\n" +
+                "bak_font.DIR\n" +
+                "macro1.g\n" +
+                "BAK.DIR\n" +
                 "End file list\n" +
                 "ok\n"
         )
-        /* SendWS(
-      "Begin file list\n" +
-        "COOL_V~1.GCO 66622272\n" +
-        "415%VA~1.GCO 66622272\n" +
-        "/ARCHIEVE/SUBDIR/TWISTY~1.GCO 1040\n" +
-        "/ARCHIEVE/STEEL-~1.GCO 2040\n" +
-        "/ARCHIEVE/STEEL_~1.GCO 2040\n" +
-        "/ARCHIEVE/RET229~1.GCO 2050\n" +
-        "/ARCHIEVE/FILE__~1.GCO 1050\n" +
-        "/ARCHIEVE/FILE__~2.GCO 1050\n" +
-        "/ARCHIEVE/FILE__~3.GCO 1050\n" +
-        "/ARCHIEVE/FILE__~4.GCO 1050\n" +
-        "/ARCHIEVE/FILE__~5.GCO 1050\n" +
-        "End file list\n" +
-        "ok\n"
-    );*/
+        res.send("")
+        return
+    }
+    if (url.indexOf("M20 L") != -1) {
+        SendWS(
+            "echo:SD card ok\n" +
+                "ok\n" +
+                "Begin file listt\n" +
+                "V2T-TEST.GCO 569266 V2T-TEST.GCO\n" +
+                "DFQ-PI~1.GCO 1490254 DFq-pika2.gco\n" +
+                "VJ1-TEST.GCO 569266 VJ1-TEST.GCO\n" +
+                "XRP-SU~1.GCO 569266 xRP-SupportChain-Body.gcod\n" +
+                "RGW-PI~1.GCO 1490254 rgw-pika2.gco\n" +
+                "PIKA2~1.GCO 1635116 pika2.gcode\n" +
+                "UJP-PI~1.GCO 1573255 ujp-pika2.gcode\n" +
+                "CTEST/INDEXH~1.GZ 69111 /index.html.gz\n" +
+                "PIKA2.GCO 1635116 PIKA2.GCO\n" +
+                "MACRO1.GCO 19 MACRO1.GCO\n" +
+                "INDEX_~1.GZ 78055 index.html.gz\n" +
+                "GCODE/TESTLO~1.GCO 25 /testlongname.gcode\n" +
+                "GCODE/TESTCUBE.GCO 353194 /TESTCUBE.GCO\n" +
+                "RESOUR~1/GCODE/APPLE~1.GCO 8140 resources//Apple.gcode\n" +
+                "RESOUR~1/GCODE/BANANA~1.GCO 7554 resources//Banana.gcode\n" +
+                "RESOUR~1/GCODE/CHERRY~1.GCO 6465 resources//Cherry.gcode\n" +
+                "RESOUR~1/GCODE/PEACH~1.GCO 8467 resources//Peach.gcode\n" +
+                "RESOUR~1/GCODE/PEAR~1.GCO 6010 resources//Pear.gcode\n" +
+                "TESTCUBE.GCO 353194 TESTCUBE.GCO\n" +
+                "TEST1.GCO 1143935 TEST1.GCO\n" +
+                "End file list\n" +
+                "ok"
+        )
+        res.send("")
+        return
+    }
+
+    if (url.indexOf("M20") != -1) {
+        SendWS(
+            "echo:SD card ok\n" +
+                "ok\n" +
+                "Begin file list\n" +
+                "V2T-TEST.GCO 569266\n" +
+                "DFQ-PI~1.GCO 1490254\n" +
+                "VJ1-TEST.GCO 569266\n" +
+                "XRP-SU~1.GCO 569266\n" +
+                "RGW-PI~1.GCO 1490254\n" +
+                "PIKA2~1.GCO 1635116\n" +
+                "UJP-PI~1.GCO 1573255\n" +
+                "CTEST/INDEXH~1.GZ 69111\n" +
+                "PIKA2.GCO 1635116\n" +
+                "MACRO1.GCO 19\n" +
+                "INDEX_~1.GZ 78055\n" +
+                "GCODE/TESTLO~1.GCO 25\n" +
+                "GCODE/TESTCUBE.GCO 353194\n" +
+                "RESOUR~1/GCODE/APPLE~1.GCO 8140\n" +
+                "RESOUR~1/GCODE/BANANA~1.GCO 7554\n" +
+                "RESOUR~1/GCODE/CHERRY~1.GCO 6465\n" +
+                "RESOUR~1/GCODE/PEACH~1.GCO 8467\n" +
+                "RESOUR~1/GCODE/PEAR~1.GCO 6010\n" +
+                "TESTCUBE.GCO 353194\n" +
+                "118.GCO 41\n" +
+                "TEST1.GCO 1143935\n" +
+                "End file list\n" +
+                "ok\n"
+        )
         res.send("")
         return
     }
@@ -305,23 +361,25 @@ const commandsQuery = (req, res, SendWS) => {
     }
     if (url.indexOf("M503") != -1) {
         SendWS(
-            "echo:  G21    ; Units in mm (mm)\n" +
-                "      \n" +
-                "echo:; Filament settings: Disabled\n" +
+            "echo:; Linear Units:\n" +
+                "echo:  G21 ; (mm)\n" +
+                "echo:; Temperature Units:\n" +
+                "echo:  M149 C ; Units in Celsius\n" +
+                "echo:; Filament settings (Disabled):\n" +
                 "echo:  M200 S0 D1.75\n" +
                 "echo:; Steps per unit:\n" +
-                "echo: M92 X80.00 Y80.00 Z400.00 E500.00\n" +
-                "echo:; Maximum feedrates (units/s):\n" +
+                "echo:  M92 X80.00 Y80.00 Z400.00 E500.00\n" +
+                "echo:; Max feedrates (units/s):\n" +
                 "echo:  M203 X300.00 Y300.00 Z5.00 E25.00\n" +
-                "echo:; Maximum Acceleration (units/s2):\n" +
+                "echo:; Max Acceleration (units/s2):\n" +
                 "echo:  M201 X3000.00 Y3000.00 Z100.00 E10000.00\n" +
-                "echo:; Acceleration (units/s2): P<print_accel> R<retract_accel> T<travel_accel>\n" +
+                "echo:; Acceleration (units/s2) (P<print-accel> R<retract-accel> T<travel-accel>):\n" +
                 "echo:  M204 P3000.00 R3000.00 T3000.00\n" +
-                "echo:; Advanced: B<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate> J<junc_dev>\n" +
+                "echo:; Advanced (B<min_segment_time_us> S<min_feedrate> T<min_travel_feedrate> J<junc_dev>):\n" +
                 "echo:  M205 B20000.00 S0.00 T0.00 J0.01\n" +
                 "echo:; Home offset:\n" +
                 "echo:  M206 X0.00 Y0.00 Z0.00\n" +
-                "echo:; PID settings:\n" +
+                "echo:; Hotend PID:\n" +
                 "echo:  M301 P22.20 I1.08 D114.00\n" +
                 "ok\n"
         )

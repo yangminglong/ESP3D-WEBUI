@@ -21,6 +21,8 @@ import { h } from "preact"
 import { SD } from "./SD-source"
 import { SDEXT } from "./SDEXT-source"
 import { CMD } from "./CMD-source"
+import { TFTUSB } from "./TFT-USB-source"
+import { TFTSD } from "./TFT-SD-source"
 import { disableUI } from "../../../components/Helpers"
 
 //only one query at once
@@ -65,6 +67,8 @@ const responseSteps = {
     SD: SD.responseSteps,
     SDEXT: SDEXT.responseSteps,
     CMD: CMD.responseSteps,
+    TFTUSB: TFTUSB.responseSteps,
+    TFTSD: TFTSD.responseSteps,
 }
 
 const processStream = (type = "stream", data = "") => {

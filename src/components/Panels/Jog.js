@@ -90,7 +90,7 @@ const JogPanel = () => {
             espHttpURL("command", { cmd: command }),
             { method: "GET", echo: command },
             {
-                onSuccess: (result) => { },
+                onSuccess: (result) => {},
                 onFail: (error) => {
                     toasts.addToast({ content: error, type: "error" })
                     console.log(error)
@@ -294,16 +294,19 @@ const JogPanel = () => {
 
     //Set the current feedrate for XY axis
     const setFeedrateXY = (e) => {
+        useUiContextFn.haptic()
         setFeedrate("XY")
     }
 
     //Set the current feedrate for Z axis
     const setFeedrateZ = (e) => {
+        useUiContextFn.haptic()
         setFeedrate("Z")
     }
 
     //Show keyboard mapped keys
     const showKeyboarHelp = () => {
+        useUiContextFn.haptic()
         const helpKeyboardJog = (
             <CenterLeft>
                 {T("P80")
@@ -350,6 +353,7 @@ const JogPanel = () => {
     }, [])
 
     const toggleUseKeyboard = (e) => {
+        useUiContextFn.haptic()
         enable_keyboard_jog = !enable_keyboard_jog
         setIsKeyboardEnabled(enable_keyboard_jog)
         enable_keyboard_jog ? AddKeyboardListener() : RemoveKeyboardListener()
@@ -397,6 +401,7 @@ const JogPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -405,6 +410,7 @@ const JogPanel = () => {
             </div>
             <div class="m-1 jog-container">
                 <PositionsControls />
+                <div class="m-1" />
                 <div class={isKeyboardEnabled ? "m-1" : "show-low m-1"}>
                     <div class="jog-buttons-main-container">
                         <div class="m-1 jog-buttons-container">
@@ -414,6 +420,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P76")}
                                 id="btn+X"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("X+")
                                 }}
@@ -426,6 +433,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P7")}
                                 id="btnHX"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendHomeCommand("X")
                                 }}
@@ -439,6 +447,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P77")}
                                 id="btn-X"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("X-")
                                 }}
@@ -453,6 +462,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P76")}
                                 id="btn+Y"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("Y+")
                                 }}
@@ -465,6 +475,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P8")}
                                 id="btnHY"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendHomeCommand("Y")
                                 }}
@@ -478,6 +489,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P77")}
                                 id="btn-Y"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("Y-")
                                 }}
@@ -493,6 +505,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P76")}
                                 id="btn+Z"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("Z+")
                                 }}
@@ -505,6 +518,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P9")}
                                 id="btnHZ"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendHomeCommand("Z")
                                 }}
@@ -518,6 +532,7 @@ const JogPanel = () => {
                                 data-tooltip={T("P77")}
                                 id="btn-Z"
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     sendJogCommand("Z-")
                                 }}
@@ -541,7 +556,10 @@ const JogPanel = () => {
                                         name="select_distance"
                                         value="100"
                                         checked={jogDistance == 100}
-                                        onclick={(e) => onCheck(e, 100)}
+                                        onclick={(e) => {
+                                            useUiContextFn.haptic()
+                                            onCheck(e, 100)
+                                        }}
                                     />
                                     <label for="move_100">100</label>
                                 </div>
@@ -555,7 +573,10 @@ const JogPanel = () => {
                                         name="select_distance"
                                         value="10"
                                         checked={jogDistance == 10}
-                                        onclick={(e) => onCheck(e, 10)}
+                                        onclick={(e) => {
+                                            useUiContextFn.haptic()
+                                            onCheck(e, 10)
+                                        }}
                                     />
                                     <label for="move_10">10</label>
                                 </div>
@@ -569,7 +590,10 @@ const JogPanel = () => {
                                         name="select_distance"
                                         value="1"
                                         checked={jogDistance == 1}
-                                        onclick={(e) => onCheck(e, 1)}
+                                        onclick={(e) => {
+                                            useUiContextFn.haptic()
+                                            onCheck(e, 1)
+                                        }}
                                     />
                                     <label for="move_1">1</label>
                                 </div>
@@ -583,7 +607,10 @@ const JogPanel = () => {
                                         name="select_distance"
                                         value="0.1"
                                         checked={jogDistance == 0.1}
-                                        onclick={(e) => onCheck(e, 0.1)}
+                                        onclick={(e) => {
+                                            useUiContextFn.haptic()
+                                            onCheck(e, 0.1)
+                                        }}
                                     />
                                     <label class="last-button" for="move_0_1">
                                         0.1
@@ -1559,6 +1586,7 @@ const JogPanel = () => {
                             data-tooltip={T("P6")}
                             id="btnHXYZ"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 sendHomeCommand("")
                             }}
@@ -1572,6 +1600,7 @@ const JogPanel = () => {
                             data-tooltip={moveToTitleXY}
                             id="btnMoveXY"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 sendMoveCommand("posxy")
                             }}
@@ -1585,6 +1614,7 @@ const JogPanel = () => {
                             data-tooltip={moveToTitleZ}
                             id="btnMoveZ"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 sendMoveCommand("posz")
                             }}
@@ -1606,6 +1636,7 @@ const JogPanel = () => {
                         icon={<ZapOff />}
                         id="btnMotorOff"
                         onclick={(e) => {
+                            useUiContextFn.haptic()
                             const cmd = useUiContextFn
                                 .getValue("motoroff")
                                 .replace(";", "\n")

@@ -26,7 +26,7 @@ import {
     Circle,
     PauseCircle,
 } from "preact-feather"
-import { useUiContext, useDatasContext } from "../../contexts"
+import { useUiContext, useDatasContext, useUiContextFn } from "../../contexts"
 import { useTargetContext } from "../../targets"
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../Helpers"
@@ -101,6 +101,7 @@ const TerminalPanel = () => {
         }
     }
     const onSend = (e) => {
+        useUiContextFn.haptic()
         inputRef.current.focus()
         if (
             terminal.input.current &&
@@ -141,11 +142,13 @@ const TerminalPanel = () => {
     console.log("Terminal panel")
 
     const toggleVerboseMode = () => {
+        useUiContextFn.haptic()
         terminal.isVerbose.current = !isVerbose
         setIsVerbose(!isVerbose)
     }
 
     const toggleAutoScroll = () => {
+        useUiContextFn.haptic()
         if (!isAutoScrollPaused) {
             terminal.isAutoScroll.current = !isAutoScroll
             setIsAutoScroll(!isAutoScroll)
@@ -191,6 +194,7 @@ const TerminalPanel = () => {
         {
             label: T("S79"),
             onClick: (e) => {
+                useUiContextFn.haptic()
                 terminal.clear()
             },
             icon: <span class="btn btn-clear" aria-label="Close" />,
@@ -211,6 +215,7 @@ const TerminalPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -251,8 +256,8 @@ const TerminalPanel = () => {
                         terminal.isAutoScrollPaused.current &&
                         Math.abs(
                             e.target.scrollTop +
-                            e.target.offsetHeight -
-                            e.target.scrollHeight
+                                e.target.offsetHeight -
+                                e.target.scrollHeight
                         ) < 5
                     ) {
                         terminal.isAutoScrollPaused.current = false

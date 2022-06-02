@@ -148,7 +148,10 @@ const MachineSettings = () => {
     }
 
     const getConfigFileName = (e) => {
-        if (e) e.target, blur()
+        if (e) {
+            useUiContextFn.haptic()
+            e.target, blur()
+        }
         const response = CMD.command("configFileName")
         //send query
         if (
@@ -164,6 +167,7 @@ const MachineSettings = () => {
     }
 
     const onCancel = (e) => {
+        useUiContextFn.haptic()
         toasts.addToast({
             content: T("S175"),
             type: "error",
@@ -196,7 +200,10 @@ const MachineSettings = () => {
     }
 
     const onSet = (e) => {
-        if (e) e.target.blur()
+        if (e) {
+            useUiContextFn.haptic()
+            e.target.blur()
+        }
         sendSerialCmd("$Config/Filename=" + currentConfig)
     }
 
@@ -238,6 +245,7 @@ const MachineSettings = () => {
             setIsLoading(true)
             const reader = new FileReader()
             reader.onload = function (e) {
+                useUiContextFn.haptic()
                 const importFile = e.target.result
                 try {
                     isImport = true
@@ -472,7 +480,7 @@ const MachineSettings = () => {
                                                         inline="true"
                                                         type={
                                                             element.type ==
-                                                                "section"
+                                                            "section"
                                                                 ? "label"
                                                                 : "text"
                                                         }
@@ -513,6 +521,7 @@ const MachineSettings = () => {
                         tooltip
                         data-tooltip={T("FL10")}
                         onclick={(e) => {
+                            useUiContextFn.haptic()
                             e.target.blur()
                             if (editionMode) {
                                 editedCurrentFileConfig =
@@ -533,6 +542,7 @@ const MachineSettings = () => {
                             tooltip
                             data-tooltip={T("S55")}
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 inputFile.current.value = ""
                                 inputFile.current.click()
@@ -547,6 +557,7 @@ const MachineSettings = () => {
                             tooltip
                             data-tooltip={T("S53")}
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 saveArrayYamlToLocalFile(
                                     currentFileConfig,
@@ -563,6 +574,7 @@ const MachineSettings = () => {
                             tooltip
                             data-tooltip={T("S62")}
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 onSaveArrayYamlToFS(
                                     currentFileConfig,
@@ -579,6 +591,7 @@ const MachineSettings = () => {
                             tooltip
                             data-tooltip={T("S59")}
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 askReStartBoard(true)
                             }}

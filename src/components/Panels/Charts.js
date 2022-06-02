@@ -41,7 +41,7 @@ temperatures set
     P: [{value:XXX, target:xxx}], //0->1 Probe
     M: [{value:XXX, target:xxx}], //0->1 M Board
     L: [{value:XXX, target:xxx}], //0->1 L is only for laser so should be out of scope
-    S: [{value:XXX, target:xxx}], //0->1 S is for sensors
+    S: [{value:XXX, unit:xxx}], //0->1 S is for sensors, unit is the unit of the sensor
   }
 temperaturesList set
 [
@@ -137,7 +137,7 @@ const isChartVisible = (index) => {
     return false
 }
 
-const isDataVisible = (index, temperatures) => {
+/*const isDataVisible = (index, temperatures) => {
     //this could be automate using a map and the charts object descriptions
     //but I am lazy to do it and benefit is arguable
     if (index == 0) {
@@ -164,7 +164,7 @@ const isDataVisible = (index, temperatures) => {
         }
     }
     return false
-}
+}*/
 
 const chartColors = [
     "255,128,128", //pink
@@ -228,86 +228,79 @@ const createTimeSeries = (chart, tool, index) => {
 }
 
 const /* Creating the charts. */
-    buildCharts = (temperaturesList, delay) => {
+    buildCharts = (index, temperaturesList, delay) => {
         //we parse each chart
-        charts.forEach((chart, index) => {
-            //check is visible
-            if (isChartVisible(index)) {
-                //create the chart
-                chart.chart = new SmoothieChart(smoothieOptions)
-                //parse defined tools
-                Object.keys(chart.series).forEach((tool) => {
-                    //if tool is visible
-                    if (isVisible(tool)) {
-                        //for each index of tool
-                        if (temperaturesList.length > 0) {
-                            if (temperaturesList[0].temperatures[tool])
-                                temperaturesList[0].temperatures[tool].forEach(
-                                    (entry, num) => {
-                                        //create new serie
-                                        createTimeSeries(chart, tool, num) /
-                                            //fill with existing data from temperaturesList
-                                            temperaturesList.forEach(
-                                                (entry) => {
-                                                    chart.series[tool][
-                                                        num
-                                                    ].append(
-                                                        entry.time,
-                                                        entry.temperatures[
-                                                            tool
-                                                        ][num].value
-                                                    )
-                                                }
-                                            )
-                                    }
-                                )
-                        }
-                    } else {
-                        chart.series[tool] = []
-                    }
-                })
-                //add the chart to the page
-                chart.chart.streamTo(chart.ref.current, delay)
-            } else {
-                //no display so no need datas
-                chart.chart = null
-                chart.series = []
-            }
-        })
-    }
-
-const updateCharts = (temperatures) => {
-    charts.forEach((chart, index) => {
+        const chart = charts[index]
         //check is visible
         if (isChartVisible(index)) {
+            //create the chart
+            chart.chart = new SmoothieChart(smoothieOptions)
             //parse defined tools
             Object.keys(chart.series).forEach((tool) => {
                 //if tool is visible
                 if (isVisible(tool)) {
                     //for each index of tool
-                    if (temperatures[tool]) {
-                        temperatures[tool].map((entry, num) => {
-                            //if serie do not exists create it
-                            if (
-                                typeof chart.series[tool][num] == "undefined" ||
-                                !chart.series[tool][num]
-                            ) {
-                                createTimeSeries(chart, tool, num) //create new serie
-                            }
-                            //add new data to the serie
-                            chart.series[tool][num].append(
-                                Date.now(),
-                                parseFloat(temperatures[tool][num].value)
+                    if (temperaturesList.length > 0) {
+                        if (temperaturesList[0].temperatures[tool])
+                            temperaturesList[0].temperatures[tool].forEach(
+                                (entry, num) => {
+                                    //create new serie
+                                    createTimeSeries(chart, tool, num) /
+                                        //fill with existing data from temperaturesList
+                                        temperaturesList.forEach((entry) => {
+                                            chart.series[tool][num].append(
+                                                entry.time,
+                                                entry.temperatures[tool][num]
+                                                    .value
+                                            )
+                                        })
+                                }
                             )
-                        })
                     }
+                } else {
+                    chart.series[tool] = []
                 }
             })
+            //add the chart to the page
+            chart.chart.streamTo(chart.ref.current, delay)
+        } else {
+            //no display so no need datas
+            chart.chart = null
+            chart.series = []
         }
-    })
+    }
+
+const updateCharts = (index, temperatures) => {
+    const chart = charts[index]
+    //check is visible
+    if (isChartVisible(index)) {
+        //parse defined tools
+        Object.keys(chart.series).forEach((tool) => {
+            //if tool is visible
+            if (isVisible(tool)) {
+                //for each index of tool
+                if (temperatures[tool]) {
+                    temperatures[tool].map((entry, num) => {
+                        //if serie do not exists create it
+                        if (
+                            typeof chart.series[tool][num] == "undefined" ||
+                            !chart.series[tool][num]
+                        ) {
+                            createTimeSeries(chart, tool, num) //create new serie
+                        }
+                        //add new data to the serie
+                        chart.series[tool][num].append(
+                            Date.now(),
+                            parseFloat(temperatures[tool][num].value)
+                        )
+                    })
+                }
+            }
+        })
+    }
 }
 
-const sensorName = (tool, index, size) => {
+const sensorName = (tool, index, size, temperatures) => {
     const name = {
         T: "P41",
         B: "P37",
@@ -316,6 +309,11 @@ const sensorName = (tool, index, size) => {
         R: "P44",
         M: "P90",
         S: "sensor",
+    }
+    if (tool == "S") {
+        return name[tool] != undefined
+            ? T("sensor") + " (" + temperatures.S[index].unit + ")"
+            : ""
     }
     return name[tool] != undefined
         ? T(name[tool]).replace("$", size == 1 ? "" : index + 1)
@@ -337,7 +335,12 @@ const Legendes = ({ index, temperatures, temperaturesList }) => {
                             chartColors[colorIndex(charts[index], tool, num)]
                         })`}
                     >
-                        {sensorName(tool, num, temperatures[tool].length)}
+                        {sensorName(
+                            tool,
+                            num,
+                            temperatures[tool].length,
+                            temperatures
+                        )}
                     </div>
                 )
             })
@@ -349,12 +352,14 @@ const Legendes = ({ index, temperatures, temperaturesList }) => {
 
 const ChartsPanel = () => {
     const { panels } = useUiContext()
-    const { temperatures, temperaturesList } = useTargetContext()
+    const { temperatures, temperaturesList, sensor, sensorList } =
+        useTargetContext()
     charts[0].ref = useRef(null)
     charts[1].ref = useRef(null)
     charts[1].ref = useRef(null)
     const id = "chartsPanel"
     const clearCharts = () => {
+        useUiContextFn.haptic()
         temperaturesList.clear()
         charts.forEach((chart) => {
             if (chart.chart) {
@@ -380,11 +385,17 @@ const ChartsPanel = () => {
 
     useEffect(() => {
         const delay = useUiContextFn.getValue("pollingrefresh")
-        buildCharts(temperaturesList.current, delay)
+        buildCharts(0, temperaturesList.current, delay)
+        buildCharts(1, temperaturesList.current, delay)
+        buildCharts(2, sensorList.current, delay)
     }, [])
     useEffect(() => {
-        updateCharts(temperatures)
+        updateCharts(0, temperatures)
+        updateCharts(1, temperatures)
     }, [temperatures])
+    useEffect(() => {
+        updateCharts(2, sensor)
+    }, [sensor])
     return (
         <div class="panel panel-dashboard">
             <div class="navbar">
@@ -399,6 +410,7 @@ const ChartsPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -451,8 +463,8 @@ const ChartsPanel = () => {
                             />
                             <Legendes
                                 index="2"
-                                temperatures={temperatures}
-                                temperaturesList={temperaturesList}
+                                temperatures={sensor}
+                                temperaturesList={sensorList}
                             />
                         </div>
                     )}

@@ -61,6 +61,7 @@ const FilesPanel = () => {
     const progressBar = {}
 
     const onCancel = () => {
+        useUiContextFn.haptic()
         processor.stopCatchResponse()
         setIsLoading(false)
         toasts.addToast({ content: T("S175"), type: "error" })
@@ -436,6 +437,7 @@ const FilesPanel = () => {
     }
 
     const onRefresh = (e, usecache = false) => {
+        if (e) useUiContextFn.haptic()
         setIsLoading(true)
         setFilePath(currentPath[currentFS])
         if (usecache && filesListCache[currentFS]) {
@@ -496,10 +498,12 @@ const FilesPanel = () => {
         setupFileInput()
     }, [])
     const openFileUploadBrowser = () => {
+        useUiContextFn.haptic()
         fileref.current.value = ""
         fileref.current.click()
     }
     const showCreateDirModal = () => {
+        useUiContextFn.haptic()
         let name
         showModal({
             modals,
@@ -599,6 +603,7 @@ const FilesPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -705,6 +710,7 @@ const FilesPanel = () => {
                                 <div
                                     class="file-line file-line-name"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         const newpath = currentPath[
                                             currentFS
                                         ].substring(
@@ -747,6 +753,7 @@ const FilesPanel = () => {
                                                     : ""
                                             }`}
                                             onclick={(e) => {
+                                                useUiContextFn.haptic()
                                                 ElementClicked(e, line)
                                             }}
                                         >
@@ -776,7 +783,7 @@ const FilesPanel = () => {
                                                             icon={<Play />}
                                                             onClick={(e) => {
                                                                 e.target.blur()
-                                                                //TODO print file
+                                                                useUiContextFn.haptic()
                                                                 const cmd =
                                                                     files.command(
                                                                         currentFS,
@@ -820,6 +827,7 @@ const FilesPanel = () => {
                                                     }
                                                     icon={<Trash2 />}
                                                     onClick={(e) => {
+                                                        useUiContextFn.haptic()
                                                         e.target.blur()
                                                         const content = (
                                                             <Fragment>

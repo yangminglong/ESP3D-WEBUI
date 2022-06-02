@@ -31,6 +31,20 @@ import {
     getTemperatures,
     isPositions,
     getPositions,
+    isPrintStatus,
+    getPrintStatus,
+    isPrintFileName,
+    getPrintFileName,
+    isStatus,
+    getStatus,
+    isFlowRate,
+    getFlowRate,
+    isFeedRate,
+    getFeedRate,
+    isSensor,
+    getSensor,
+    isFanSpeed,
+    getFanSpeed,
 } from "./filters"
 
 /*
@@ -49,6 +63,24 @@ const TargetContextProvider = ({ children }) => {
         z: "?",
     })
     const MAX_TEMPERATURES_LIST_SIZE = 400
+
+    const globalStatus = useRef({
+        printState: { status: "Unknown", printing: false, progress: 0 },
+        filename: "",
+        state: "",
+    })
+    const fansSpeed = useRef([])
+    const flowsRate = useRef([])
+    const feedsRate = useRef([])
+
+    //format is value is set in indexed value of array
+    //fan / flowRate follow extruders but not feedRate, but keep indexed array also
+    const [fanSpeed, setFanSpeed] = useState(fansSpeed.current)
+    const [flowRate, setFlowRate] = useState(flowsRate.current)
+    const [feedRate, setFeedRate] = useState(feedsRate.current)
+
+    //status has 3 scope : print status, printing filename, state of printer
+    const [status, setStatus] = useState(globalStatus.current)
 
     //format tool:["0":{current:xxx target:xxx}, "1":{current:xxx target:xxx}, ...]
     //index is same as printer
@@ -79,6 +111,25 @@ const TargetContextProvider = ({ children }) => {
         temperaturesListRef.current = []
         setTemperaturesList([])
     }
+    //Sensor
+    const [sensorData, setSensorData] = useState({ S: [] })
+
+    const [sensorDataList, setSensorDataList] = useState([])
+    const sensorDataListRef = useRef(sensorDataList)
+    sensorDataListRef.current = sensorDataList
+    const add2SensorDataList = (sensorDataSet) => {
+        if (sensorDataListRef.current.length >= MAX_TEMPERATURES_LIST_SIZE) {
+            sensorDataListRef.current.shift()
+        }
+        sensorDataListRef.current =
+            sensorDataListRef.current.concat(sensorDataSet)
+        setSensorDataList(sensorDataListRef.current)
+    }
+
+    const clearSensorDataList = () => {
+        sensorDataListRef.current = []
+        setSensorDataList([])
+    }
 
     const { terminal } = useDatasContext()
     const dataBuffer = useRef({
@@ -102,6 +153,40 @@ const TargetContextProvider = ({ children }) => {
             } else if (isPositions(data)) {
                 const p = getPositions(data)
                 setPositions(p)
+            } else if (isPrintStatus(data)) {
+                const p = getPrintStatus(data)
+                globalStatus.current.printState = p
+                setStatus(globalStatus.current)
+            } else if (isPrintFileName(data)) {
+                const p = getPrintFileName(data)
+                //Todo: do some sanity check, update
+                globalStatus.current.filename = p
+                setStatus(globalStatus.current)
+            } else if (isStatus(data)) {
+                const p = getStatus(data)
+                globalStatus.current.state = p
+                setStatus(globalStatus.current)
+            } else if (isFlowRate(data)) {
+                const p = getFlowRate(data)
+                flowsRate.current[p.index] = p.value
+                setFlowRate(flowsRate.current)
+            } else if (isFeedRate(data)) {
+                const p = getFeedRate(data)
+                feedsRate.current[p.index] = p.value
+                setFeedRate(feedsRate.current)
+            } else if (isFanSpeed(data)) {
+                const p = getFanSpeed(data)
+                fansSpeed.current[p.index] = p.value
+                setFanSpeed(fansSpeed.current)
+            }
+        } else if (type === "core") {
+            if (isSensor(data)) {
+                const result = getSensor(data)
+                setSensorData({ S: result })
+                add2SensorDataList({
+                    temperatures: { S: result },
+                    time: new Date(),
+                })
             }
         }
         //etc...
@@ -184,8 +269,10 @@ const TargetContextProvider = ({ children }) => {
                     })
                 }
             } else {
-                const isverboseOnly = isVerboseOnly(type, data)
-                terminal.add({ type, content: data, isverboseOnly })
+                if (type != "core") {
+                    const isverboseOnly = isVerboseOnly(type, data)
+                    terminal.add({ type, content: data, isverboseOnly })
+                }
                 dispatchInternally(type, data)
             }
             dispatchToExtensions(type, data)
@@ -200,8 +287,35 @@ const TargetContextProvider = ({ children }) => {
         temperaturesList: {
             current: temperaturesList,
             clear: clearTemperaturesList,
-            add: add2TemperaturesList,
         },
+        fanSpeed: {
+            current: fanSpeed,
+            set: (index, value) => {
+                console.log("set fan speed", index, "=", value)
+                fansSpeed[index] = value
+                setFanSpeed(fanSpeed)
+            },
+        },
+        flowRate: {
+            current: flowRate,
+            set: (index, value) => {
+                flowsRate[index] = value
+                setFlowRate(fanSpeed)
+            },
+        },
+        feedRate: {
+            current: feedRate,
+            set: (index, value) => {
+                feedsRate[index] = value
+                setFeedRate(fanSpeed)
+            },
+        },
+        sensor: sensorData,
+        sensorList: {
+            current: sensorDataList,
+            clear: clearSensorDataList,
+        },
+        status: status,
         processData,
     }
 

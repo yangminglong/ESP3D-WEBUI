@@ -187,6 +187,7 @@ const MachineSettings = () => {
     }
 
     const onCancel = (e) => {
+        useUiContextFn.haptic()
         toasts.addToast({
             content: T("S175"),
             type: "error",
@@ -197,6 +198,7 @@ const MachineSettings = () => {
     }
 
     const onRefresh = (e) => {
+        useUiContextFn.haptic()
         //get command
         const response = CMD.command("eeprom")
         //send query
@@ -338,6 +340,8 @@ const MachineSettings = () => {
                                 label={T("S61")}
                                 icon={<Save />}
                                 onClick={(e) => {
+                                    useUiContextFn.haptic()
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     saveSettings()
                                 }}

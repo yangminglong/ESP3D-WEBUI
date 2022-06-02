@@ -32,10 +32,22 @@
           "value": false
         },
         {
-          "id": "showsensorspanel",
+          "id": "hapticfeedback",
           "type": "boolean",
           "label": "S176",
           "value": false
+        },
+        {
+          "id": "audiofeedback",
+          "type": "boolean",
+          "label": "S200",
+          "value": false,
+          "depend": [
+            {
+              "id": "audio",
+              "value": true
+            }
+          ]
         },
         {
           "id": "showinformationpage",

@@ -19,7 +19,7 @@ Macros.js - ESP3D WebUI component file
 import { h } from "preact"
 import { T } from "../Translations"
 import { Cast } from "preact-feather"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { ButtonImg } from "../Controls"
 import { useHttpFn } from "../../hooks"
 import { espHttpURL, replaceVariables } from "../Helpers"
@@ -137,6 +137,7 @@ const MacrosPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -155,6 +156,7 @@ const MacrosPanel = () => {
                                 label={element.name}
                                 icon={displayIcon}
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     processMacro(element.action, element.type)
                                 }}

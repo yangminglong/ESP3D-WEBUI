@@ -22,7 +22,11 @@ import { h } from "preact"
 import { Link } from "../Router"
 import { T } from "../Translations"
 import { AppLogo, WebUILogo, Target } from "../../targets"
-import { useSettingsContext, useUiContext } from "../../contexts"
+import {
+    useSettingsContext,
+    useUiContext,
+    useUiContextFn,
+} from "../../contexts"
 import { Tool } from "preact-feather"
 
 /*
@@ -66,6 +70,9 @@ const TabBar = () => {
                                 }
                                 activeClassName="active"
                                 href={href}
+                                onclick={(e) => {
+                                    useUiContextFn.haptic()
+                                }}
                             >
                                 {icon}
                                 <label class="hide-low">{T(label)}</label>

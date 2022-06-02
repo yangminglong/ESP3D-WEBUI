@@ -25,7 +25,7 @@ import {
 } from "../components/Helpers"
 
 const useUiContextFn = {}
-
+const audio = {}
 /*
  * Local const
  *
@@ -51,7 +51,7 @@ const UiContextProvider = ({ children }) => {
         authenticate: true,
         page: "connecting",
     })
-    const audio = {}
+
     const toastsRef = useRef(toasts)
     toastsRef.current = toasts
     const notificationsRef = useRef(notifications)
@@ -227,6 +227,19 @@ const UiContextProvider = ({ children }) => {
     useUiContextFn.getValue = getValue
     useUiContextFn.getElement = getElement
 
+    const haptic = () => {
+        if (getValue("audiofeedback")) {
+            play([{ f: 1000, d: 100 }])
+        }
+        if (!window || !window.navigator || !window.navigator.vibrate) return
+        if (getValue("hapticfeedback")) {
+            window.navigator.vibrate(200)
+            //console.log("haptic feedback")
+        }
+    }
+
+    useUiContextFn.haptic = haptic
+
     const initAudio = () => {
         if (typeof window.AudioContext !== "undefined") {
             audio.context = new window.AudioContext()
@@ -238,28 +251,34 @@ const UiContextProvider = ({ children }) => {
     }
     audio.list = []
     const play = (sequence) => {
+        if (sequence && audio.list.length > 0) {
+            return
+        }
         if (getValue("audio")) {
-            if (!audio.context) initAudio()
-            if (sequence) audio.list = [...sequence]
+            if (!audio.context) {
+                initAudio()
+            }
+            if (sequence) {
+                audio.list = [...sequence]
+            }
             if (audio.list.length > 0 && audio.context) {
                 if (audio.context.state === "suspended") audio.context.resume()
+                if (audio.oscillator) audio.oscillator.stop()
                 audio.oscillator = audio.context.createOscillator()
                 audio.oscillator.type = "square"
-                audio.oscillator.frequency.setValueAtTime(
-                    200,
-                    audio.context.currentTime
-                ) // value in hertz
                 audio.oscillator.connect(audio.context.destination)
                 const current = audio.list.shift()
-                audio.oscillator.frequency.setValueAtTime(
-                    current.f,
-                    audio.context.currentTime
-                ) // value in hertz
+                audio.oscillator.frequency.value = current.f
                 audio.oscillator.start()
-                setTimeout(() => {
+                if (current.d) {
+                    setTimeout(() => {
+                        audio.oscillator.stop()
+                        play()
+                    }, current.d)
+                } else {
                     audio.oscillator.stop()
                     play()
-                }, current.d)
+                }
             }
         }
     }

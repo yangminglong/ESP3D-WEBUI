@@ -99,6 +99,7 @@ const WsContextProvider = ({ children }) => {
                         break
                     case "NOTIFICATION":
                         //Show notification
+                        console.log("Notification: " + stdOutData)
                         toasts.addToast({
                             content: (
                                 <label class="m-1">

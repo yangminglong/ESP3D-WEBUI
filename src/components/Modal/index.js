@@ -16,7 +16,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 import { h } from "preact"
-import { useUiContext } from "../../contexts"
+import { useUiContext, useUiContextFn } from "../../contexts"
 import { Modal as SpectreModal } from "../Controls"
 import { disableUI } from "../Helpers"
 import { showConfirmationModal } from "./confirmModal"
@@ -50,6 +50,7 @@ const Modal = () => {
                     <SpectreModal.Overlay
                         aria-label="Close"
                         onClick={() => {
+                            useUiContextFn.haptic()
                             if (modal.overlay) modals.removeModal(index)
                         }}
                     />
@@ -62,7 +63,10 @@ const Modal = () => {
                                         : "btn btn-clear float-right btn-close"
                                 }
                                 aria-label="Close"
-                                onClick={() => modals.removeModal(index)}
+                                onClick={() => {
+                                    useUiContextFn.haptic()
+                                    modals.removeModal(index)
+                                }}
                             />
                             <div className="modal-title h5">
                                 {modal.title && modal.title}

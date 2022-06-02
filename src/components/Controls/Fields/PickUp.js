@@ -21,7 +21,7 @@ import { useEffect, useState } from "preact/hooks"
 import { Search } from "preact-feather"
 import { showModal } from "../../Modal"
 import { ScanPacksList } from "../ScanPacksList"
-import { useUiContext } from "../../../contexts"
+import { useUiContext, useUiContextFn } from "../../../contexts"
 import { T, getLanguageName } from "../../Translations"
 
 const PickUp = ({ label = "", id = "", inline, setValue, value, ...rest }) => {
@@ -70,6 +70,7 @@ const PickUp = ({ label = "", id = "", inline, setValue, value, ...rest }) => {
                 readonly
                 value={id == "language" ? T("lang") : T("none")}
                 onClick={(e) => {
+                    useUiContextFn.haptic()
                     e.target.blur()
                     const modalId = `${id}Pickup`
                     showModal({

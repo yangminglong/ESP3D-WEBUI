@@ -40,6 +40,7 @@ const Toast = ({ index, type = "", children, timeout = 2000, remove }) => {
         <SpectreToast {...{ [type]: true }}>
             <SpectreToast.Close
                 onClick={() => {
+                    useUiContextFn.haptic()
                     remove(index)
                 }}
             />

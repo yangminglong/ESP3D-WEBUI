@@ -24,7 +24,12 @@ const FieldGroup = ({ className, children, label, id }) => {
         <fieldset
             class={
                 `${className ? className : ""}` +
-                " fieldset-top-separator field-group"
+                `${
+                    label
+                        ? "fieldset-top-separator"
+                        : "fieldset-no-top-separator"
+                }` +
+                " fieldset-bottom-separator field-group"
             }
             id={id}
         >

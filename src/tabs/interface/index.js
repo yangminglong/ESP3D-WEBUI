@@ -133,12 +133,13 @@ const InterfaceTab = () => {
                 //Update camera source automaticaly
                 //Note: is there a less complexe way to do ?
                 const sourceId = fieldData.id.split("-")[0]
-                const extraList = interfaceSettings.current.settings.extrapanels
+                const extraList =
+                    interfaceSettings.current.settings.extracontents
                 //look for extra panels entry
                 const subextraList =
                     extraList[
                         extraList.findIndex((element) => {
-                            return element.id == "extrapanels"
+                            return element.id == "extracontents"
                         })
                     ].value
                 //look for extra panel specific id
@@ -197,6 +198,7 @@ const InterfaceTab = () => {
     }
 
     const getInterface = () => {
+        useUiContextFn.haptic()
         setIsLoading(true)
         getInterfaceSettings(setIsLoading)
     }
@@ -479,6 +481,7 @@ const InterfaceTab = () => {
                             data-tooltip={T("S55")}
                             icon={<Download />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 inputFile.current.value = ""
                                 inputFile.current.click()
@@ -491,6 +494,7 @@ const InterfaceTab = () => {
                             data-tooltip={T("S53")}
                             icon={<ExternalLink />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 exportPreferences(interfaceSettings.current)
                             }}
@@ -503,6 +507,7 @@ const InterfaceTab = () => {
                                 label={T("S61")}
                                 icon={<Save />}
                                 onClick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     SaveSettings()
                                 }}

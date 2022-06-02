@@ -23,7 +23,12 @@ import { ButtonImg, Loading, Progress } from "../../components/Controls"
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../../components/Helpers"
 import { T } from "../../components/Translations"
-import { useUiContext, useSettingsContext, useWsContext } from "../../contexts"
+import {
+    useUiContext,
+    useSettingsContext,
+    useWsContext,
+    useUiContextFn,
+} from "../../contexts"
 import {
     RefreshCcw,
     RotateCcw,
@@ -278,10 +283,10 @@ const FeaturesTab = () => {
                 const importFile = e.target.result
                 try {
                     const importData = JSON.parse(importFile)
-                        ;[featuresSettings.current, haserrors] = importFeatures(
-                            featuresSettings.current,
-                            importData
-                        )
+                    ;[featuresSettings.current, haserrors] = importFeatures(
+                        featuresSettings.current,
+                        importData
+                    )
                     if (haserrors) {
                         toasts.addToast({ content: "S56", type: "error" })
                     }
@@ -324,7 +329,7 @@ const FeaturesTab = () => {
                     } else if (typeof fieldData.minSecondary != undefined) {
                         if (
                             fieldData.value.trim().length <
-                            fieldData.minSecondary &&
+                                fieldData.minSecondary &&
                             fieldData.value.trim().length > fieldData.min
                         ) {
                             validation.valid = false
@@ -451,22 +456,22 @@ const FeaturesTab = () => {
                                                                         const Options =
                                                                             options
                                                                                 ? options.reduce(
-                                                                                    (
-                                                                                        acc,
-                                                                                        curval
-                                                                                    ) => {
-                                                                                        return [
-                                                                                            ...acc,
-                                                                                            {
-                                                                                                label: T(
-                                                                                                    curval.label
-                                                                                                ),
-                                                                                                value: curval.value,
-                                                                                            },
-                                                                                        ]
-                                                                                    },
-                                                                                    []
-                                                                                )
+                                                                                      (
+                                                                                          acc,
+                                                                                          curval
+                                                                                      ) => {
+                                                                                          return [
+                                                                                              ...acc,
+                                                                                              {
+                                                                                                  label: T(
+                                                                                                      curval.label
+                                                                                                  ),
+                                                                                                  value: curval.value,
+                                                                                              },
+                                                                                          ]
+                                                                                      },
+                                                                                      []
+                                                                                  )
                                                                                 : null
                                                                         return (
                                                                             <Field
@@ -479,7 +484,7 @@ const FeaturesTab = () => {
                                                                                 extra={
                                                                                     subsectionId ==
                                                                                         "sta" &&
-                                                                                        label ==
+                                                                                    label ==
                                                                                         "SSID"
                                                                                         ? "scan"
                                                                                         : null
@@ -530,7 +535,10 @@ const FeaturesTab = () => {
                         tooltip
                         data-tooltip={T("S23")}
                         icon={<RefreshCcw />}
-                        onClick={getFeatures}
+                        onClick={() => {
+                            useUiContextFn.haptic()
+                            getFeatures()
+                        }}
                     />
                 )}
                 {Object.keys(features).length != 0 && (
@@ -542,6 +550,7 @@ const FeaturesTab = () => {
                             data-tooltip={T("S55")}
                             icon={<Download />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 inputFile.current.value = ""
                                 inputFile.current.click()
@@ -554,6 +563,7 @@ const FeaturesTab = () => {
                             data-tooltip={T("S53")}
                             icon={<ExternalLink />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 exportFeatures(featuresSettings.current)
                             }}
@@ -566,6 +576,7 @@ const FeaturesTab = () => {
                                 label={T("S61")}
                                 icon={<Save />}
                                 onClick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     SaveSettings()
                                 }}
@@ -579,6 +590,7 @@ const FeaturesTab = () => {
                             label={T("S58")}
                             icon={<RotateCcw />}
                             onClick={(e) => {
+                                useUiContextFn.haptic()
                                 e.target.blur()
                                 showConfirmationModal({
                                     modals,

@@ -208,7 +208,7 @@ const JogPanel = () => {
                 echo: replaceVariables(realCommandsTable, command, true), //need to see real command as it is not printable
             },
             {
-                onSuccess: (result) => { },
+                onSuccess: (result) => {},
                 onFail: (error) => {
                     toasts.addToast({ content: error, type: "error" })
                     console.log(error)
@@ -355,8 +355,8 @@ const JogPanel = () => {
             axis.startsWith("X") || axis.startsWith("Y")
                 ? currentFeedRate["XY"]
                 : axis.startsWith("Z")
-                    ? currentFeedRate["Z"]
-                    : currentFeedRate[currentAxis]
+                ? currentFeedRate["Z"]
+                : currentFeedRate[currentAxis]
         if (axis.startsWith("Axis"))
             selected_axis = axis.replace("Axis", currentAxis)
         else selected_axis = axis
@@ -437,6 +437,7 @@ const JogPanel = () => {
 
     //Show keyboard mapped keys
     const showKeyboarHelp = () => {
+        useUiContextFn.haptic()
         let help = ""
         if (positions.x && useUiContextFn.getValue("showx")) {
             help += T("CN24")
@@ -553,27 +554,29 @@ const JogPanel = () => {
                                     positions.x) ||
                                     (useUiContextFn.getValue("showy") &&
                                         positions.y)) && (
-                                        <li class="menu-item">
-                                            <div
-                                                class="menu-entry"
-                                                onclick={(e) => {
-                                                    setFeedrate("XY")
-                                                }}
-                                            >
-                                                <div class="menu-panel-item">
-                                                    <span class="text-menu-item">
-                                                        {T("CN2")}
-                                                    </span>
-                                                </div>
+                                    <li class="menu-item">
+                                        <div
+                                            class="menu-entry"
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                setFeedrate("XY")
+                                            }}
+                                        >
+                                            <div class="menu-panel-item">
+                                                <span class="text-menu-item">
+                                                    {T("CN2")}
+                                                </span>
                                             </div>
-                                        </li>
-                                    )}
+                                        </div>
+                                    </li>
+                                )}
                                 {positions.z &&
                                     useUiContextFn.getValue("showz") && (
                                         <li class="menu-item">
                                             <div
                                                 class="menu-entry"
                                                 onclick={(e) => {
+                                                    useUiContextFn.haptic()
                                                     setFeedrate("Z")
                                                 }}
                                             >
@@ -592,6 +595,7 @@ const JogPanel = () => {
                                             <div
                                                 class="menu-entry"
                                                 onclick={(e) => {
+                                                    useUiContextFn.haptic()
                                                     setFeedrate("A")
                                                 }}
                                             >
@@ -609,6 +613,7 @@ const JogPanel = () => {
                                             <div
                                                 class="menu-entry"
                                                 onclick={(e) => {
+                                                    useUiContextFn.haptic()
                                                     setFeedrate("B")
                                                 }}
                                             >
@@ -626,6 +631,7 @@ const JogPanel = () => {
                                             <div
                                                 class="menu-entry"
                                                 onclick={(e) => {
+                                                    useUiContextFn.haptic()
                                                     setFeedrate("C")
                                                 }}
                                             >
@@ -642,6 +648,7 @@ const JogPanel = () => {
                                     <div
                                         class="menu-entry"
                                         onclick={(e) => {
+                                            useUiContextFn.haptic()
                                             enable_keyboard_jog =
                                                 !enable_keyboard_jog
                                             setIsKeyboardEnabled(
@@ -686,6 +693,7 @@ const JogPanel = () => {
                             class="btn btn-clear btn-close m-1"
                             aria-label="Close"
                             onclick={(e) => {
+                                useUiContextFn.haptic()
                                 panels.hide(id)
                             }}
                         />
@@ -710,6 +718,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN12")}
                                     id="btn+X"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("X+")
                                     }}
@@ -723,6 +732,7 @@ const JogPanel = () => {
                                         data-tooltip={T("CN10")}
                                         id="btnHX"
                                         onclick={(e) => {
+                                            useUiContextFn.haptic()
                                             e.target.blur()
                                             sendHomeCommand("X")
                                         }}
@@ -738,6 +748,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN19")}
                                     id="btnZX"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendZeroCommand("X")
                                     }}
@@ -751,6 +762,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN13")}
                                     id="btn-X"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("X-")
                                     }}
@@ -767,6 +779,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN12")}
                                     id="btn+Y"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("Y+")
                                     }}
@@ -780,6 +793,7 @@ const JogPanel = () => {
                                         data-tooltip={T("CN10")}
                                         id="btnHY"
                                         onclick={(e) => {
+                                            useUiContextFn.haptic()
                                             e.target.blur()
                                             sendHomeCommand("Y")
                                         }}
@@ -794,6 +808,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN19")}
                                     id="btnZY"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendZeroCommand("Y")
                                     }}
@@ -807,6 +822,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN13")}
                                     id="btn-Y"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("Y-")
                                     }}
@@ -823,6 +839,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN12")}
                                     id="btn+Z"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("Z+")
                                     }}
@@ -836,6 +853,7 @@ const JogPanel = () => {
                                         data-tooltip={T("CN10")}
                                         id="btnHZ"
                                         onclick={(e) => {
+                                            useUiContextFn.haptic()
                                             e.target.blur()
                                             sendHomeCommand("Z")
                                         }}
@@ -850,6 +868,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN19")}
                                     id="btnZZ"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendZeroCommand("Z")
                                     }}
@@ -863,6 +882,7 @@ const JogPanel = () => {
                                     data-tooltip={T("CN13")}
                                     id="btn-Z"
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         e.target.blur()
                                         sendJogCommand("Z-")
                                     }}
@@ -877,214 +897,235 @@ const JogPanel = () => {
                             positions.a ||
                             positions.b ||
                             positions.c) && (
-                                <div class="m-1 p-2 jog-buttons-container">
-                                    <div class="btn-group jog-distance-selector-container">
-                                        <center class="jog-distance-selector-header">
-                                            mm
-                                        </center>
+                            <div class="m-1 p-2 jog-buttons-container">
+                                <div class="btn-group jog-distance-selector-container">
+                                    <center class="jog-distance-selector-header">
+                                        mm
+                                    </center>
 
-                                        <div
-                                            class="flatbtn tooltip tooltip-left"
-                                            data-tooltip={T("CN18")}
+                                    <div
+                                        class="flatbtn tooltip tooltip-left"
+                                        data-tooltip={T("CN18")}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id="move_100"
+                                            name="select_distance"
+                                            value="100"
+                                            checked={currentJogDistance == 100}
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                onCheck(e, 100)
+                                            }}
+                                        />
+                                        <label for="move_100">100</label>
+                                    </div>
+                                    <div
+                                        class="flatbtn tooltip tooltip-left"
+                                        data-tooltip={T("CN18")}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id="move_50"
+                                            name="select_distance"
+                                            value="50"
+                                            checked={currentJogDistance == 50}
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                onCheck(e, 50)
+                                            }}
+                                        />
+                                        <label for="move_50">50</label>
+                                    </div>
+                                    <div
+                                        class="flatbtn tooltip tooltip-left"
+                                        data-tooltip={T("CN18")}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id="move_10"
+                                            name="select_distance"
+                                            value="10"
+                                            checked={currentJogDistance == 10}
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                onCheck(e, 10)
+                                            }}
+                                        />
+                                        <label for="move_10">10</label>
+                                    </div>
+                                    <div
+                                        class="flatbtn tooltip tooltip-left"
+                                        data-tooltip={T("CN18")}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id="move_1"
+                                            name="select_distance"
+                                            value="1"
+                                            checked={currentJogDistance == 1}
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                onCheck(e, 1)
+                                            }}
+                                        />
+                                        <label for="move_1">1</label>
+                                    </div>
+                                    <div
+                                        class="flatbtn tooltip tooltip-left"
+                                        data-tooltip={T("CN18")}
+                                    >
+                                        <input
+                                            type="radio"
+                                            id="move_0_1"
+                                            name="select_distance"
+                                            value="0.1"
+                                            checked={currentJogDistance == 0.1}
+                                            onclick={(e) => {
+                                                useUiContextFn.haptic()
+                                                onCheck(e, 0.1)
+                                            }}
+                                        />
+                                        <label
+                                            class="last-button"
+                                            for="move_0_1"
                                         >
-                                            <input
-                                                type="radio"
-                                                id="move_100"
-                                                name="select_distance"
-                                                value="100"
-                                                checked={currentJogDistance == 100}
-                                                onclick={(e) => onCheck(e, 100)}
-                                            />
-                                            <label for="move_100">100</label>
-                                        </div>
-                                        <div
-                                            class="flatbtn tooltip tooltip-left"
-                                            data-tooltip={T("CN18")}
-                                        >
-                                            <input
-                                                type="radio"
-                                                id="move_50"
-                                                name="select_distance"
-                                                value="50"
-                                                checked={currentJogDistance == 50}
-                                                onclick={(e) => onCheck(e, 50)}
-                                            />
-                                            <label for="move_50">50</label>
-                                        </div>
-                                        <div
-                                            class="flatbtn tooltip tooltip-left"
-                                            data-tooltip={T("CN18")}
-                                        >
-                                            <input
-                                                type="radio"
-                                                id="move_10"
-                                                name="select_distance"
-                                                value="10"
-                                                checked={currentJogDistance == 10}
-                                                onclick={(e) => onCheck(e, 10)}
-                                            />
-                                            <label for="move_10">10</label>
-                                        </div>
-                                        <div
-                                            class="flatbtn tooltip tooltip-left"
-                                            data-tooltip={T("CN18")}
-                                        >
-                                            <input
-                                                type="radio"
-                                                id="move_1"
-                                                name="select_distance"
-                                                value="1"
-                                                checked={currentJogDistance == 1}
-                                                onclick={(e) => onCheck(e, 1)}
-                                            />
-                                            <label for="move_1">1</label>
-                                        </div>
-                                        <div
-                                            class="flatbtn tooltip tooltip-left"
-                                            data-tooltip={T("CN18")}
-                                        >
-                                            <input
-                                                type="radio"
-                                                id="move_0_1"
-                                                name="select_distance"
-                                                value="0.1"
-                                                checked={currentJogDistance == 0.1}
-                                                onclick={(e) => onCheck(e, 0.1)}
-                                            />
-                                            <label
-                                                class="last-button"
-                                                for="move_0_1"
-                                            >
-                                                0.1
-                                            </label>
-                                        </div>
+                                            0.1
+                                        </label>
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                        )}
                     </div>
                 </div>
                 {((useUiContextFn.getValue("showa") && positions.a) ||
                     (useUiContextFn.getValue("showb") && positions.b) ||
                     (useUiContextFn.getValue("showc") && positions.c)) && (
-                        <div class="m-1 jog-buttons-container-horizontal">
-                            <div class="form-group m-2 text-primary">
-                                <select
-                                    id="selectAxisList"
-                                    class="form-select"
-                                    style="border-color: #5755d9!important"
-                                    onchange={(e) => {
-                                        onChangeAxis(e)
-                                    }}
-                                    value={currentSelectedAxis}
-                                >
-                                    {positions.a &&
-                                        useUiContextFn.getValue("showa") && (
-                                            <option value="A">A</option>
-                                        )}
-                                    {positions.b &&
-                                        useUiContextFn.getValue("showb") && (
-                                            <option value="B">B</option>
-                                        )}
-                                    {positions.c &&
-                                        useUiContextFn.getValue("showc") && (
-                                            <option value="C">C</option>
-                                        )}
-                                </select>
-                            </div>
-                            <Button
-                                m2
-                                tooltip
-                                data-tooltip={T("CN12")}
-                                id="btn+axis"
-                                onclick={(e) => {
-                                    e.target.blur()
-                                    sendJogCommand("Axis+")
+                    <div class="m-1 jog-buttons-container-horizontal">
+                        <div class="form-group m-2 text-primary">
+                            <select
+                                id="selectAxisList"
+                                class="form-select"
+                                style="border-color: #5755d9!important"
+                                onchange={(e) => {
+                                    onChangeAxis(e)
                                 }}
+                                value={currentSelectedAxis}
                             >
-                                +{currentSelectedAxis}
-                            </Button>
-                            {useUiContextFn.getValue("homesingleaxis") && (
-                                <Button
-                                    m2
-                                    tooltip
-                                    data-tooltip={T("CN10")}
-                                    id="btnHaxis"
-                                    onclick={(e) => {
-                                        e.target.blur()
-                                        sendHomeCommand("Axis")
-                                    }}
-                                >
-                                    <Home size="1rem" />
-                                    <span class="text-tiny">
-                                        {currentSelectedAxis}
-                                    </span>
-                                </Button>
-                            )}
-
-                            <Button
-                                m2
-                                tooltip
-                                data-tooltip={T("CN19")}
-                                id="btnZaxis"
-                                onclick={(e) => {
-                                    e.target.blur()
-                                    sendZeroCommand("Axis")
-                                }}
-                            >
-                                &Oslash;
-                                <span class="text-tiny">{currentSelectedAxis}</span>
-                            </Button>
-                            <Button
-                                m2
-                                tooltip
-                                data-tooltip={T("CN13")}
-                                id="btn-axis"
-                                onclick={(e) => {
-                                    e.target.blur()
-                                    sendJogCommand("Axis-")
-                                }}
-                            >
-                                -{currentSelectedAxis}
-                            </Button>
+                                {positions.a &&
+                                    useUiContextFn.getValue("showa") && (
+                                        <option value="A">A</option>
+                                    )}
+                                {positions.b &&
+                                    useUiContextFn.getValue("showb") && (
+                                        <option value="B">B</option>
+                                    )}
+                                {positions.c &&
+                                    useUiContextFn.getValue("showc") && (
+                                        <option value="C">C</option>
+                                    )}
+                            </select>
                         </div>
-                    )}
+                        <Button
+                            m2
+                            tooltip
+                            data-tooltip={T("CN12")}
+                            id="btn+axis"
+                            onclick={(e) => {
+                                useUiContextFn.haptic()
+                                e.target.blur()
+                                sendJogCommand("Axis+")
+                            }}
+                        >
+                            +{currentSelectedAxis}
+                        </Button>
+                        {useUiContextFn.getValue("homesingleaxis") && (
+                            <Button
+                                m2
+                                tooltip
+                                data-tooltip={T("CN10")}
+                                id="btnHaxis"
+                                onclick={(e) => {
+                                    useUiContextFn.haptic()
+                                    e.target.blur()
+                                    sendHomeCommand("Axis")
+                                }}
+                            >
+                                <Home size="1rem" />
+                                <span class="text-tiny">
+                                    {currentSelectedAxis}
+                                </span>
+                            </Button>
+                        )}
+
+                        <Button
+                            m2
+                            tooltip
+                            data-tooltip={T("CN19")}
+                            id="btnZaxis"
+                            onclick={(e) => {
+                                useUiContextFn.haptic()
+                                e.target.blur()
+                                sendZeroCommand("Axis")
+                            }}
+                        >
+                            &Oslash;
+                            <span class="text-tiny">{currentSelectedAxis}</span>
+                        </Button>
+                        <Button
+                            m2
+                            tooltip
+                            data-tooltip={T("CN13")}
+                            id="btn-axis"
+                            onclick={(e) => {
+                                useUiContextFn.haptic()
+                                e.target.blur()
+                                sendJogCommand("Axis-")
+                            }}
+                        >
+                            -{currentSelectedAxis}
+                        </Button>
+                    </div>
+                )}
                 {(positions.x ||
                     positions.y ||
                     positions.z ||
                     positions.a ||
                     positions.b ||
                     positions.c) && (
-                        <div class="jog-extra-buttons-container">
-                            <Button
-                                m1
-                                tooltip
-                                data-tooltip={T("CN20")}
-                                id="btnHAll"
-                                onclick={(e) => {
-                                    e.target.blur()
-                                    sendHomeCommand("")
-                                }}
-                            >
-                                <Home />
-                                <MoreHorizontal />
-                            </Button>
-                            <Button
-                                m1
-                                tooltip
-                                data-tooltip={T("CN20")}
-                                id="btnZAll"
-                                onclick={(e) => {
-                                    e.target.blur()
-                                    sendZeroCommand("")
-                                }}
-                            >
-                                <label style="font-size:150%; vertical-align: top;">
-                                    &Oslash;
-                                </label>
-                                <MoreHorizontal />
-                            </Button>
-                        </div>
-                    )}
+                    <div class="jog-extra-buttons-container">
+                        <Button
+                            m1
+                            tooltip
+                            data-tooltip={T("CN20")}
+                            id="btnHAll"
+                            onclick={(e) => {
+                                useUiContextFn.haptic()
+                                e.target.blur()
+                                sendHomeCommand("")
+                            }}
+                        >
+                            <Home />
+                            <MoreHorizontal />
+                        </Button>
+                        <Button
+                            m1
+                            tooltip
+                            data-tooltip={T("CN20")}
+                            id="btnZAll"
+                            onclick={(e) => {
+                                useUiContextFn.haptic()
+                                e.target.blur()
+                                sendZeroCommand("")
+                            }}
+                        >
+                            <label style="font-size:150%; vertical-align: top;">
+                                &Oslash;
+                            </label>
+                            <MoreHorizontal />
+                        </Button>
+                    </div>
+                )}
 
                 <div class="jog-extra-buttons-container">
                     <ButtonImg
@@ -1095,6 +1136,7 @@ const JogPanel = () => {
                         id="btnDisable"
                         icon={<ZapOff />}
                         onclick={(e) => {
+                            useUiContextFn.haptic()
                             e.target.blur()
                             const cmd = replaceVariables(
                                 realCommandsTable,
@@ -1115,6 +1157,7 @@ const JogPanel = () => {
                         }
                         data-tooltip={T("CN23")}
                         onclick={(e) => {
+                            useUiContextFn.haptic()
                             e.target.blur()
                             const cmd = replaceVariables(
                                 realCommandsTable,

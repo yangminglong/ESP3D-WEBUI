@@ -30,6 +30,7 @@ import {
     useUiContext,
     useWsContext,
     useRouterContext,
+    useUiContextFn,
 } from "../../contexts"
 import { useHttpQueue } from "../../hooks"
 import { espHttpURL } from "../Helpers"
@@ -150,6 +151,7 @@ const Navbar = () => {
     }, [])
 
     const onDisconnect = () => {
+        useUiContextFn.haptic()
         showConfirmationModal({
             modals,
             title: T("S26"),
@@ -173,6 +175,7 @@ const Navbar = () => {
                             return (
                                 <Link
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         if (buttonExtraPage.current)
                                             buttonExtraPage.current.classList.remove(
                                                 "active"
@@ -183,10 +186,10 @@ const Navbar = () => {
                                         href == "/about"
                                             ? "navbar-brand logo no-box "
                                             : connectionSettings.current
-                                                .FWTarget == 0 &&
-                                                href == "/dashboard"
-                                                ? "d-none"
-                                                : "btn btn-link no-box feather-icon-container"
+                                                  .FWTarget == 0 &&
+                                              href == "/dashboard"
+                                            ? "d-none"
+                                            : "btn btn-link no-box feather-icon-container"
                                     }
                                     activeClassName="active"
                                     href={href}
@@ -220,6 +223,7 @@ const Navbar = () => {
                                     class="btn btn-link no-box dropdown-toggle feather-icon-container"
                                     ref={buttonExtraPage}
                                     onclick={(e) => {
+                                        useUiContextFn.haptic()
                                         if (menuExtraPage.current)
                                             menuExtraPage.current.classList.remove(
                                                 "d-none"
@@ -245,6 +249,7 @@ const Navbar = () => {
                                                             class="feather-icon-container"
                                                             href={href}
                                                             onclick={(e) => {
+                                                                useUiContextFn.haptic()
                                                                 if (
                                                                     menuExtraPage.current
                                                                 )
@@ -293,7 +298,7 @@ const Navbar = () => {
                     <span
                         className={
                             connectionSettings.current.Authentication ==
-                                "Disabled"
+                            "Disabled"
                                 ? "d-none"
                                 : "btn btn-link no-box mx-2 feather-icon-container"
                         }

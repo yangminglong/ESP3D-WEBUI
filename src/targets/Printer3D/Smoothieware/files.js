@@ -23,6 +23,8 @@ import { DIRECTSD } from "./DIRECTSD-source"
 import { SD } from "./SD-source"
 import { DIRECTSDEXT } from "./DIRECTSDEXT-source"
 import { SDEXT } from "./SDEXT-source"
+import { TFTSD } from "./TFT-SD-source"
+import { TFTUSB } from "./TFT-USB-source"
 import { useSettingsContextFn, useUiContextFn } from "../../../contexts"
 
 //List of supported files systems
@@ -96,8 +98,8 @@ const capabilities = {
     SD: SD.capabilities,
     DIRECTSDEXT: DIRECTSDEXT.capabilities,
     SDEXT: SDEXT.capabilities,
-    TFTUSB: {},
-    TFTSD: {},
+    TFTUSB: TFTUSB.capabilities,
+    TFTSD: TFTSD.capabilities,
 }
 
 const commands = {
@@ -106,8 +108,8 @@ const commands = {
     SD: SD.commands,
     DIRECTSDEXT: DIRECTSDEXT.commands,
     SDEXT: SDEXT.commands,
-    TFTUSB: {},
-    TFTSD: {},
+    TFTUSB: TFTUSB.commands,
+    TFTSD: TFTSD.commands,
 }
 
 function capability() {

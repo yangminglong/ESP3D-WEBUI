@@ -1,5 +1,5 @@
 /*
- SD-source.js - ESP3D WebUI Target file
+ TFT-SD-source.js - ESP3D WebUI Target file
 
  Copyright (c) 2020 Luc Lebosse. All rights reserved.
 
@@ -28,20 +28,63 @@ import {
 import { useUiContextFn, useSettingsContextFn } from "../../../contexts"
 
 //Extract information from string - specific to FW / source
-const formatFileSerialLine = (lines) => {
-    const filesFilter = useUiContextFn.getValue("filesfilter") //get extension list
-    const extRegExp = new RegExp("([\$a-zA-Z0-9!#\u0020\+\-]+)", 'g')
-    const extensionsPattern = [...filesFilter.matchAll(extRegExp)].map(item => item[1].trim()).join('|')
-    const lineParserPattern = `^(?:(?<path>.*\\.(?:${extensionsPattern}))? *(?<size>\\d+)? )?(?:(?<pathAlt>.*\\.(?:${extensionsPattern}))? *((?<sizeAlt>\\d*) *)?)$`
-    return lines.reduce((acc, file) => {
-        const fileRegex = new RegExp(lineParserPattern, "ig")
-        const m = fileRegex.exec(file.trim())
-        if (m) {
-            const { path, size, pathAlt, sizeAlt } = m.groups
-            return [...acc, { name: (pathAlt || path), size: formatFileSizeToString(sizeAlt || size) }]
+const formatFileSerialLine = (acc, line) => {
+    //possible format and corresponding regexp extract
+    const regList = [
+        {
+            regex:
+                useSettingsContextFn.getValue("SerialProtocol") == "MKS"
+                    ? "^(.*).DIR$"
+                    : "^\\/(.*)\\/$",
+            extract: (res) => {
+                return { name: res[1], size: -1 }
+            },
+        },
+        {
+            regex: "^(.*\\.GCODE)$",
+            extract: (res) => {
+                return { name: res[1], size: "" }
+            },
+        },
+    ]
+    //get extension list
+    const extList = useUiContextFn.getValue("filesfilter")
+    const filter =
+        "(" +
+        extList.split(";").reduce((acc, item) => {
+            if (acc.length == 0) {
+                acc = item.trim()
+            } else {
+                acc += "|" + item.trim()
+            }
+            return acc
+        }, "") +
+        ")"
+
+    for (let i = 0; i < regList.length; i++) {
+        let regFn
+        try {
+            regFn = regList[i].regex.replaceAll("GCODE", filter)
+            //console.log("regex is :", regFn)
+            const reg_ex = new RegExp(regFn, "ig")
+            const result = reg_ex.exec(line)
+            if (result) {
+                //console.log(result)
+                const extract = regList[i].extract(result)
+                //console.log(regList[i].extract(result))
+                acc.push({
+                    name: extract.name,
+                    size: formatFileSizeToString(extract.size),
+                })
+                return acc
+            }
+        } catch (e) {
+            console.log("error in regex", regFn, e)
+            return acc
         }
-        return acc
-    }, [])
+    }
+    //nothing was found
+    return acc
 }
 
 const capabilities = {
@@ -49,7 +92,7 @@ const capabilities = {
         return canProcessFile(filename)
     },
     UseFilters: () => true,
-    IsFlatFS: () => true,
+    IsFlatFS: () => false,
     Upload: (path, filename, eMsg = false) => {
         if (eMsg) return "E1"
         //TODO
@@ -75,10 +118,16 @@ const capabilities = {
 
 const commands = {
     list: (path, filename) => {
-        return {
-            type: "cmd",
-            cmd: useUiContextFn.getValue("sdlistcmd").replace(";", "\n"),
-        }
+        if (useSettingsContextFn.getValue("SerialProtocol") == "MKS") {
+            return {
+                type: "cmd",
+                cmd: "M998 1\r\nM20 1:" + path,
+            }
+        } else
+            return {
+                type: "cmd",
+                cmd: "M20 SD:" + path,
+            }
     },
     upload: (path, filename) => {
         if (useSettingsContextFn.getValue("SerialProtocol") == "MKS")
@@ -104,11 +153,13 @@ const commands = {
         return { type: "none" }
     },
     formatResult: (result) => {
-        const files = formatFileSerialLine(result.content)
-        return {
-            files: sortedFilesList(files),
-            status: formatStatus(result.status),
-        }
+        const res = {}
+        const files = result.content.reduce((acc, line) => {
+            return formatFileSerialLine(acc, line)
+        }, [])
+        res.files = sortedFilesList(files)
+        res.status = formatStatus(result.status)
+        return res
     },
     filterResult: (data, path) => {
         const res = {}
@@ -117,15 +168,32 @@ const commands = {
         return res
     },
     play: (path, filename) => {
-        return {
-            type: "cmd",
-            cmd: "M23 " + path + (path == "/" ? "" : "/") + filename + "\nM24",
+        if (useSettingsContextFn.getValue("SerialProtocol") != "MKS") {
+            return {
+                type: "cmd",
+                cmd:
+                    "M23 SD:" +
+                    path +
+                    (path == "/" ? "" : "/") +
+                    filename +
+                    "\nM24",
+            }
+        } else {
+            return {
+                type: "cmd",
+                cmd:
+                    "M23 M998 1\r\n1:" +
+                    path +
+                    (path == "/" ? "" : "/") +
+                    filename +
+                    "\nM24",
+            }
         }
     },
     delete: (path, filename) => {
         return {
             type: "cmd",
-            cmd: "M30 " + path + (path == "/" ? "" : "/") + filename,
+            cmd: "M30 SD:" + path + (path == "/" ? "" : "/") + filename,
         }
     },
 }
@@ -138,8 +206,6 @@ const responseSteps = {
             return (
                 data.indexOf("error") != -1 ||
                 data.indexOf("echo:No SD card") != -1 ||
-                data.indexOf("echo:No media") != -1 ||
-                data.indexOf('echo:Unknown command: "M21"') != -1 ||
                 data.indexOf('echo:Unknown command: "M20"') != -1
             )
         },
@@ -153,6 +219,6 @@ const responseSteps = {
     },
 }
 
-const SD = { capabilities, commands, responseSteps }
+const TFTSD = { capabilities, commands, responseSteps }
 
-export { SD }
+export { TFTSD }

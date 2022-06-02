@@ -128,7 +128,7 @@ const MixedExtrudersControl = ({ feedrate }) => {
             espHttpURL("command", { cmd: command }),
             { method: "GET", echo: command },
             {
-                onSuccess: (result) => { },
+                onSuccess: (result) => {},
                 onFail: (error) => {
                     toasts.addToast({ content: error, type: "error" })
                     console.log(error)
@@ -204,6 +204,7 @@ const MixedExtrudersControl = ({ feedrate }) => {
                                 className={item.locked ? "btn-primary" : ""}
                                 icon={locked ? <Lock /> : <Unlock />}
                                 onclick={(e) => {
+                                    useUiContextFn.haptic()
                                     const nblocked =
                                         mixedExtrudersWeight.reduce(
                                             (acc, value) => {
@@ -215,7 +216,7 @@ const MixedExtrudersControl = ({ feedrate }) => {
                                         )
                                     if (
                                         mixedExtrudersWeight.length - 2 <=
-                                        nblocked &&
+                                            nblocked &&
                                         !mixedExtrudersWeight[index].locked
                                     )
                                         return
@@ -335,10 +336,11 @@ const MixedExtrudersControl = ({ feedrate }) => {
                     label={T("P53")}
                     data-tooltip={T("P53")}
                     onClick={(e) => {
+                        useUiContextFn.haptic()
                         e.target.blur()
                         const cmd =
                             mixSetCommand() +
-                            "G91\nG1 E" +
+                            "\nG91\nG1 E" +
                             extrudeDistance[0] +
                             " F" +
                             feedrate.value +
@@ -355,10 +357,11 @@ const MixedExtrudersControl = ({ feedrate }) => {
                     label={T("P54")}
                     data-tooltip={T("P54")}
                     onClick={(e) => {
+                        useUiContextFn.haptic()
                         e.target.blur()
                         const cmd =
                             mixSetCommand() +
-                            "G91\nG1 E-" +
+                            "\nG91\nG1 E-" +
                             extrudeDistance[0] +
                             " F" +
                             feedrate.value +

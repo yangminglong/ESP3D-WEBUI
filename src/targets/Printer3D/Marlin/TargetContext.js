@@ -41,6 +41,8 @@ import {
     getFlowRate,
     isFeedRate,
     getFeedRate,
+    isSensor,
+    getSensor,
 } from "./filters"
 
 /*
@@ -60,10 +62,14 @@ const TargetContextProvider = ({ children }) => {
     })
     const MAX_TEMPERATURES_LIST_SIZE = 400
 
-    const globalStatus = useRef({ printState: "?", filename: "", state: "" })
-    const fansSpeed = useRef([100])
-    const flowsRate = useRef([100])
-    const feedsRate = useRef([100])
+    const globalStatus = useRef({
+        printState: { status: "Unknown", printing: false, progress: 0 },
+        filename: "",
+        state: "",
+    })
+    const fansSpeed = useRef([])
+    const flowsRate = useRef([])
+    const feedsRate = useRef([])
 
     //format is value is set in indexed value of array
     //fan / flowRate follow extruders but not feedRate, but keep indexed array also
@@ -102,6 +108,25 @@ const TargetContextProvider = ({ children }) => {
     const clearTemperaturesList = () => {
         temperaturesListRef.current = []
         setTemperaturesList([])
+    }
+    //Sensor
+    const [sensorData, setSensorData] = useState({ S: [] })
+
+    const [sensorDataList, setSensorDataList] = useState([])
+    const sensorDataListRef = useRef(sensorDataList)
+    sensorDataListRef.current = sensorDataList
+    const add2SensorDataList = (sensorDataSet) => {
+        if (sensorDataListRef.current.length >= MAX_TEMPERATURES_LIST_SIZE) {
+            sensorDataListRef.current.shift()
+        }
+        sensorDataListRef.current =
+            sensorDataListRef.current.concat(sensorDataSet)
+        setSensorDataList(sensorDataListRef.current)
+    }
+
+    const clearSensorDataList = () => {
+        sensorDataListRef.current = []
+        setSensorDataList([])
     }
 
     const { terminal } = useDatasContext()
@@ -147,6 +172,15 @@ const TargetContextProvider = ({ children }) => {
                 const p = getFeedRate(data)
                 feedsRate.current[p.index] = p.value
                 setFeedRate(feedsRate.current)
+            }
+        } else if (type === "core") {
+            if (isSensor(data)) {
+                const result = getSensor(data)
+                setSensorData({ S: result })
+                add2SensorDataList({
+                    temperatures: { S: result },
+                    time: new Date(),
+                })
             }
         }
         //etc...
@@ -229,8 +263,10 @@ const TargetContextProvider = ({ children }) => {
                     })
                 }
             } else {
-                const isverboseOnly = isVerboseOnly(type, data)
-                terminal.add({ type, content: data, isverboseOnly })
+                if (type != "core") {
+                    const isverboseOnly = isVerboseOnly(type, data)
+                    terminal.add({ type, content: data, isverboseOnly })
+                }
                 dispatchInternally(type, data)
             }
             dispatchToExtensions(type, data)
@@ -249,6 +285,7 @@ const TargetContextProvider = ({ children }) => {
         fanSpeed: {
             current: fanSpeed,
             set: (index, value) => {
+                console.log("set fan speed", index, "=", value)
                 fansSpeed[index] = value
                 setFanSpeed(fanSpeed)
             },
@@ -267,7 +304,12 @@ const TargetContextProvider = ({ children }) => {
                 setFeedRate(fanSpeed)
             },
         },
-        status,
+        sensor: sensorData,
+        sensorList: {
+            current: sensorDataList,
+            clear: clearSensorDataList,
+        },
+        status: status,
         processData,
     }
 

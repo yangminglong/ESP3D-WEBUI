@@ -164,20 +164,22 @@ path.std:hover {
   align-items: center;
 }
 
-.extruders-container{
-  justify-content: center;
-}
-
+.status-ctrls,
+.extra-ctrls,
 .temperatures-ctrls,
 .jog-positions-ctrls {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
 }
+
+.extra-ctrls,
 .temperatures-ctrls {
   flex-wrap: wrap;
 }
 
+.status-control,
+.extra-control,
 .temperatures-ctrl,
 .jog-position-ctrl {
   display: flex;
@@ -188,6 +190,8 @@ path.std:hover {
   align-items: center;
 }
 
+.status-control-header,
+.extra-control-header,
 .temperatures-header,
 .jog-position-header {
   border-radius: 5px 5px 0px 0px;
@@ -200,6 +204,8 @@ path.std:hover {
   width: 100%;
 }
 
+.status-control-value,
+.extra-control-value,
 .temperatures-value,
 .jog-position-value {
   text-align: center;
@@ -207,6 +213,10 @@ path.std:hover {
   font-size: 80%;
   width: 100%;
   height: 100%;
+}
+.status-control-value{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .temperatures-value {
@@ -264,6 +274,8 @@ path.std:hover {
   justify-content: space-evenly;
 }
 
+.print-buttons-container,
+.extra-ctrls-container,
 .extruder-ctrls-container,
 .temperature-ctrls-container {
   width: 100%;
@@ -271,13 +283,21 @@ path.std:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+
+.print-buttons-container,
+.extra-ctrls-container{
+  justify-content: space-around;
+}
+
+.extra-ctrls-container2,
 .temperature-ctrls-container2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.extruder-ctrl-name
+.extruder-ctrl-name,
 .temperature-ctrl-name {
   color: #5755d9;
   flex-grow: 1;

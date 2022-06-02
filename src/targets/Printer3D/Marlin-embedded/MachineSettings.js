@@ -130,7 +130,6 @@ const MachineSettings = () => {
         machineSetting.totalToSave = 0
         machineSetting.toSave = []
         machineSetting.cache.map((entry, index) => {
-            console.log(entry)
             if (entry.type != "comment") {
                 if (entry.initial.trim() != entry.value.trim()) {
                     machineSetting.totalToSave++
@@ -187,6 +186,7 @@ const MachineSettings = () => {
     }
 
     const onCancel = (e) => {
+        useUiContextFn.haptic()
         toasts.addToast({
             content: T("S175"),
             type: "error",
@@ -197,6 +197,7 @@ const MachineSettings = () => {
     }
 
     const onRefresh = (e) => {
+        if (e) useUiContextFn.haptic()
         //get command
         const response = CMD.command("eeprom")
         //send query
@@ -338,6 +339,7 @@ const MachineSettings = () => {
                                 label={T("S61")}
                                 icon={<Save />}
                                 onClick={(e) => {
+                                    useUiContextFn.haptic()
                                     e.target.blur()
                                     saveSettings()
                                 }}

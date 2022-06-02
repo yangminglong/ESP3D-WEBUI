@@ -55,6 +55,7 @@ const EmergencyButton = () => {
             data-tooltip={T("P15")}
             id="btnEStop"
             onclick={(e) => {
+                useUiContextFn.haptic()
                 e.target.blur()
                 const cmd = replaceVariables(
                     realCommandsTable,

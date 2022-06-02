@@ -91,12 +91,18 @@
   animation: border-dance 4s infinite linear;
 }
 
-.fieldset-top-separator {
+.fieldset-no-top-separator {
+  margin-top: -1.8rem;
+}
+
+.fieldset-bottom-separator {
   border-bottom: 0.05rem solid #dadee4;
+}
+  .fieldset-top-separator {
   border-top: 0.05rem solid #dadee4;
 }
 
-.fieldset-top-separator legend {
+.fieldset-bottom-separator legend {
   margin-left: -0.5rem;
 }
 
@@ -137,6 +143,11 @@
   margin-top: -1rem;
   padding-bottom: 0.5rem;
   max-width: fit-content;
+}
+
+.maxwidth {
+  width:100%;
+  max-width: 100%;
 }
 
 .terminal {
@@ -256,6 +267,13 @@
 
 .m-05 {
   margin: 0.05rem !important;
+}
+
+.error-login-message{
+  color: red;
+  background-color: white;
+  font-weight: bolder;
+  text-align: center;
 }
 
 .content-container,
